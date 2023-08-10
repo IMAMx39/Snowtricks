@@ -3,27 +3,43 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Entity\User;
+use DateInterval;
+use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Faker\Factory;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
     private UserPasswordHasherInterface $hasher;
+    private Filesystem $filesystem;
+    private SluggerInterface $slugger;
     private string $dataImagesDir;
     private string $tricksPicsDir;
 
 
-    public function __construct(UserPasswordHasherInterface $hasher)
+    public function __construct(UserPasswordHasherInterface $hasher, Filesystem $filesystem, string $tricksPicsDir, SluggerInterface $slugger)
     {
         $this->hasher = $hasher;
+        $this->filesystem = $filesystem;
+        $this->tricksPicsDir = $tricksPicsDir;
+        $this->slugger = $slugger;
         $this->dataImagesDir = dirname(__DIR__) . '/Data/Images/';
     }
 
+    /**
+     * @throws Exception
+     */
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
@@ -40,8 +56,8 @@ class AppFixtures extends Fixture
             $user->setPassword($this->hasher->hashPassword($user, 'password'));
             $manager->persist($user);
             $users[] = $user;
-
         }
+
 
         $userAdmin = new User();
         $userAdmin->setUsername('admin');
@@ -142,10 +158,73 @@ class AppFixtures extends Fixture
                 ->setCreatedAt(new DateTimeImmutable());
         }
 
+
+        // create comments for tricks
+
+        $comments = [];
+        $textComment = [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel facilisis volutpat est velit. Lectus sit amet est placerat in egestas erat imperdiet.",
+            "consectetur adipiscing elit",
+            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a condimentum.",
+            "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        ];
+
+        foreach ($tricks as $trick) {
+            for ($i = 0; $i < mt_rand(2, 10); $i++) {
+                $comment = (new Comment())
+                    ->setTrick($trick)
+                    ->setAuthor($users[mt_rand(0, count($users) - 1)])
+                    ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0, 10)))
+                    ->setContent($textComment[mt_rand(0, count($textComment) - 1)]);
+                $manager->persist($comment);
+                $comments[] = $comment;
+            }
+        }
+
+        // create images for tricks
+
+        $images = [];
+        foreach (scandir($this->dataImagesDir) as $image) {
+            if ($image !== '.' && $image !== '..') {
+                $images[] = $image;
+            }
+        }
+
+
+
+
+
         foreach ($tricks as $trick) {
             $manager->persist($trick);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getImmutableDateDaysAgo(int $days): DateTimeImmutable
+    {
+        $daysInterval = new DateInterval("P{$days}D");
+        $strDate = ((new DateTime())->sub($daysInterval))->format(DateTimeInterface::ATOM);
+        return new DateTimeImmutable($strDate);
+    }
+
+    private function picUpload(string $fileName, string $trickSlug): string
+    {
+        $picFile = new File($this->dataImagesDir . $fileName);
+        $targetDir = $this->tricksPicsDir . $trickSlug;
+
+        if (!$this->filesystem->exists($targetDir)) {
+            $this->filesystem->mkdir($targetDir);
+        }
+
+        $safeFilename = $this->slugger->slug($fileName);
+        $newFileName = $safeFilename . '-' . uniqid() . '.' . $picFile->guessExtension();
+
+        $this->filesystem->copy($picFile->getPathname(), $targetDir . '/' . $newFileName, true);
+        return $newFileName;
     }
 }
