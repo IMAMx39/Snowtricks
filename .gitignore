@@ -22,3 +22,7 @@
 ```
 /tools/
 .php-cs-fixer.cache
+/public/uploads/avatars/*
+/public/uploads/images/*
+!/public/uploads/avatars/default.png
+!/public/uploads/images/default.png
