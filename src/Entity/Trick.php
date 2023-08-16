@@ -20,7 +20,7 @@ class Trick
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -31,10 +31,10 @@ class Trick
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class,cascade: ['persist'], orphanRemoval: true)]
     private Collection $videos;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class ,cascade: ['persist'], orphanRemoval: true)]
     private Collection $images;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
@@ -69,14 +69,14 @@ class Trick
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getSlug(): ?string
     {
-        return $this->title;
+        return $this->slug;
     }
 
-    public function setTitle(string $title): static
+    public function setSlug(string $slug): static
     {
-        $this->title = $title;
+        $this->slug = $slug;
 
         return $this;
     }
@@ -157,6 +157,9 @@ class Trick
 
     public function addImage(Image $image): static
     {
+        if($image->getFile() === null) {
+            return $this;
+        }
         if (!$this->images->contains($image)) {
             $this->images->add($image);
             $image->setTrick($this);
