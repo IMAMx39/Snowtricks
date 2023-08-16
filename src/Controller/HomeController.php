@@ -13,9 +13,11 @@ class HomeController extends AbstractController
     public function index(TrickRepository $trickRepository): Response
     {
         $tricks = $trickRepository->getTricks();
+        $imagesUrl = $this->getParameter('tricks_images_uri');
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'tricks' => $tricks,
+            'imagesUrl' => $imagesUrl
         ]);
     }
 }

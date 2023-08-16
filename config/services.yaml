@@ -22,12 +22,12 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\DataFixtures\LoadData:
+    App\DataFixtures\AppFixtures:
         arguments:
             $tricksImagesDir: '%tricks_images_dir%'
 
     App\Service\FileManager:
         arguments:
-            $tricksDir: '%tricks_pics_dir%'
+            $tricksDir: '%tricks_images_dir%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
