@@ -318,7 +318,7 @@ class AppFixtures extends Fixture
      */
     private function getImmutableDateDaysAgo(int $days) : \DateTimeImmutable
     {
-        $daysInterval = new \DateInterval("P${days}D");
+        $daysInterval = new \DateInterval("P{$days}D");
         $strDate = ((new \DateTime())->sub($daysInterval))->format(DateTimeInterface::ATOM);
         return new \DateTimeImmutable($strDate);
     }
