@@ -30,7 +30,7 @@ class TrickController extends AbstractController
     #[Route('/trick/{slug}', name: 'app_trick')]
     public function showTrick(Trick $trick, Request $request): Response
     {
-        $comments = $this->commentRepository->findCommentsByTrick($trick);
+        $comments = $this->commentRepository->findComment($trick);
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request); // handle the request before checking if the form is submitted and valid

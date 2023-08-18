@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TrickController!{% endblock %}
+{% block title %}{{ trick.name }}{% endblock %}
 
 {% block body %}
     {% set defaultImage = trick.images is empty %}
@@ -40,18 +40,20 @@
 
                     <!-- Comments section-->
                     <section>
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <!-- Comment form-->
-                                {{ form_start(form) }}
+                        {% if app.user.username is defined %}
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <!-- Comment form-->
+                                    {{ form_start(form) }}
 
-                                {% for message in app.flashes('success') %}
-                                    <div class="alert alert-success"> {{ message }} </div>
-                                {% endfor %}
+                                    {% for message in app.flashes('success') %}
+                                        <div class="alert alert-success"> {{ message }} </div>
+                                    {% endfor %}
 
-                                {{ form_end(form) }}
+                                    {{ form_end(form) }}
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     </section>
                     <section>
                         <div class="mt-4 card bg-light">
@@ -65,7 +67,7 @@
                                         </div>
                                         <div class="ms-3">
                                             <div class="fw-bold">{{ comment.author.username }}</div>
-                                            {{ comment.content|nl2br }}
+                                            {{ comment.content }}
                                         </div>
                                     </div>
                                 </div>

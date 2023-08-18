@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,6 +25,20 @@ class CommentRepository extends ServiceEntityRepository
     public function findCommentsByTrick($trick): array
     {
         return $this->findBy(["trick" => $trick], ["createdAt" => "DESC"]);
+    }
+
+    public function findComment($trick)
+    {
+        if ($trick instanceof Trick) {
+            $object = 'trick';
+        }
+
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.' . $object . '= :val')
+            ->setParameter('val', $trick->getId())
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()->getResult();
+
     }
 
     //    /**

@@ -63,14 +63,14 @@ class AppFixtures extends Fixture
         $tricks[] = (new Trick())
             ->setSlug("Mute")
             ->setName("Mute")
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setCategory($categories[0])
             ->setDescription("Saisie de la carre frontside de la planche entre les deux pieds avec la main avant.\nUn grab est d'autant plus réussi que la saisie est longue. De plus, le saut est d'autant plus esthétique que la saisie du snowboard est franche, ce qui permet au rideur d'accentuer la torsion de son corps grâce à la tension de sa main sur la planche.\nOn dit alors que le grab est tweaké (le verbe anglais to tweak signifie « pincer » mais a également le sens de « peaufiner »).");
 
         $tricks[] = (new Trick())
             ->setSlug("Style Week")
             ->setName("Style Week")
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setCategory($categories[0])
             ->setDescription("Saisie de la carre backside de la planche, entre les deux pieds, avec la main avant.\nUn grab est d'autant plus réussi que la saisie est longue. De plus, le saut est d'autant plus esthétique que la saisie du snowboard est franche, ce qui permet au rideur d'accentuer la torsion de son corps grâce à la tension de sa main sur la planche.\nOn dit alors que le grab est tweaké (le verbe anglais to tweak signifie « pincer » mais a également le sens de « peaufiner »).");
 
@@ -78,56 +78,56 @@ class AppFixtures extends Fixture
             ->setSlug("Truck Driver")
             ->setName("Truck Driver")
             ->setCategory($categories[0])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Saisie du carre avant et carre arrière avec chaque main (comme tenir un volant de voiture).\nUn grab est d'autant plus réussi que la saisie est longue. De plus, le saut est d'autant plus esthétique que la saisie du snowboard est franche, ce qui permet au rideur d'accentuer la torsion de son corps grâce à la tension de sa main sur la planche.\nOn dit alors que le grab est tweaké (le verbe anglais to tweak signifie « pincer » mais a également le sens de « peaufiner »).");
 
         $tricks[] = (new Trick())
             ->setSlug("Stalefish")
             ->setName("Stalefish")
             ->setCategory($categories[0])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Saisie de la carre backside de la planche entre les deux pieds avec la main arrière.\nUn grab est d'autant plus réussi que la saisie est longue. De plus, le saut est d'autant plus esthétique que la saisie du snowboard est franche, ce qui permet au rideur d'accentuer la torsion de son corps grâce à la tension de sa main sur la planche.\nOn dit alors que le grab est tweaké (le verbe anglais to tweak signifie « pincer » mais a également le sens de « peaufiner »).");
 
         $tricks[] = (new Trick())
             ->setSlug("1080 ou Big Foot")
             ->setName("1080 ou Big Foot")
             ->setCategory($categories[1])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Trois tours en rotation horizontale.\nUne rotation peut être agrémentée d'un grab, ce qui rend le saut plus esthétique mais aussi plus difficile car la position tweakée a tendance à déséquilibrer le rideur et désaxer la rotation.");
 
         $tricks[] = (new Trick())
             ->setSlug("Front Flip")
             ->setName("Front Flip")
             ->setCategory($categories[2])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Rotation en avant dans les airs.\nIl est possible de faire plusieurs flips à la suite, et d'ajouter un grab à la rotation.");
 
         $tricks[] = (new Trick())
             ->setSlug("Back Flip")
             ->setName("Back Flip")
             ->setCategory($categories[2])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Rotation en arrière dans les airs.\nLes flips agrémentés d'une vrille existent aussi (Mac Twist, Hakon Flip...), mais de manière beaucoup plus rare, et se confondent souvent avec certaines rotations horizontales désaxées.");
 
         $tricks[] = (new Trick())
             ->setSlug("Slide")
             ->setName("Slide")
             ->setCategory($categories[3])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Un slide consiste à glisser sur une barre de slide.\nLe slide se fait soit avec la planche dans l'axe de la barre, soit perpendiculaire, soit plus ou moins désaxé.");
 
         $tricks[] = (new Trick())
             ->setSlug("Nose Slide")
             ->setName("Nose Slide")
             ->setCategory($categories[3])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Slide avec l'avant de la planche sur la barre.");
 
         $tricks[] = (new Trick())
             ->setSlug("Tail Slide")
             ->setName("Tail Slide")
             ->setCategory($categories[3])
-            ->setCreatedAt(new DateTimeImmutable())
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setDescription("Slide avec l'arrière de la planche sur la barre");
         // Placeholder Tricks
 
@@ -145,10 +145,7 @@ class AppFixtures extends Fixture
 
         foreach ($tricks as $trick)
         {
-            if(empty($trick->getCreatedAt())) {
-                $trick->setCreatedAt(new \DateTimeImmutable());
-            }
-
+            $trick->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)));
             $trick->setSlug($this->slugger->slug($trick->getName()));
 
             // Set trick pictures
@@ -173,18 +170,18 @@ class AppFixtures extends Fixture
         // Users
         $users = [];
         $johndoe = new User();
-        $johndoe->setUsername("John Doe")
-            ->setEmail("john.doe@gmail.com")
+        $johndoe->setUsername("James smith")
+            ->setEmail("james.smith@gmail.com")
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
-            ->setPassword($this->hasher->hashPassword($johndoe, "Secret123"))
+            ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
             ->setIsVerified(true);
         $users[] = $johndoe;
 
         $janedoe = new User();
-        $janedoe->setUsername("Jane Doe")
-            ->setEmail("jane.doe@gmail.com")
+        $janedoe->setUsername("crestophe durand")
+            ->setEmail("crestophe.durand@gmail.com")
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
-            ->setPassword($this->hasher->hashPassword($johndoe, "Secret123"))
+            ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
             ->setIsVerified(true);
         $users[] = $janedoe;
 
@@ -194,11 +191,11 @@ class AppFixtures extends Fixture
         // ADMIN User
         $admin = new User();
         $admin->setUsername("Admin")
-            ->setEmail("admin@p6.oc")
+            ->setEmail("admin@admin.com")
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
-            ->setPassword($this->hasher->hashPassword($johndoe, "Secret123"))
+            ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
             ->setIsVerified(true)
-            ->setRoles(['ROLE_ADMIN']);
+            ->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
         $users[] = $admin;
 
 
