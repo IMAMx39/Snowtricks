@@ -51,11 +51,12 @@ class AppFixtures extends Fixture
         $this->purgeDirectories();
 
         // create categories
-        $categories = new ArrayCollection();
+        $categories = [];
         foreach (['Grab', 'Rotation désaxées', 'Slide', 'Flip', 'Old school'] as $value) {
             $category = new Category();
             $category->setName($value);
             $manager->persist($category);
+            $categories[] = $category;
         }
 
         $tricks = [];

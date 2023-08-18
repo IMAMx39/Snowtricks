@@ -21,6 +21,11 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    public function findCommentsByTrick($trick): array
+    {
+        return $this->findBy(["trick" => $trick], ["createdAt" => "DESC"]);
+    }
+
     //    /**
     //     * @return Comment[] Returns an array of Comment objects
     //     */
