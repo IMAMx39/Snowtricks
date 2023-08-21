@@ -13,8 +13,10 @@ class VideoFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('filename',TextType::class)
-            ->add('trick')
+            ->add('filename',TextType::class, [
+                'attr'=>['placeholder' => "Entrez l'URL d'une vidéo Youtube"],
+                'required'=> false,
+            ])
         ;
     }
 

@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Trick;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,29 +20,43 @@ class TrickFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class,[
+            ->add('name', TextType::class, [
                 'constraints' => [
                     new Assert\Length([
                         'min' => 5, 'minMessage' => 'Le titre doit faire au moins {{ limit }} caractères.',
                         'max' => 30, 'maxMessage' => 'Le titre ne peut pas faire plus de {{ limit }} caractères.'
                     ]),
-                    new Assert\NotBlank([ 'message' => 'Vous devez entrez un titre pour le Trick' ]),
+                    new Assert\NotBlank(['message' => 'Vous devez entrez un titre pour le Trick']),
                 ],
                 'attr' => ['class' => 'form-control mb-3'],
                 'label' => 'Titre'
             ])
-            ->add('description',TextareaType::class,[
+            ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'form-control mb-3'],
                 'label' => 'Description'
             ])
-            ->add('category',EntityType::class, [
+            ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'label' => 'Catégorie',
-                 'attr' => ['class' => 'form-control mb-3'],
+                'attr' => ['class' => 'form-control mb-3'],
             ])
-            ->add('submit',SubmitType::class,[
-                'attr' => [ 'class' => 'btn btn-success' ],
+            ->add('images', CollectionType::class, [
+                'entry_type' => ImageFormType::class,
+                'allow_add' => true,
+                'entry_options' => ['label' => false],
+                'by_reference' => false,
+                'label' => 'Images'
+            ])
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoFormType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'label' => 'Vidéos'
+            ])
+            ->add('submit', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-success'],
 
                 'label' => 'Enregistrer'
             ]);

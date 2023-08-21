@@ -17,7 +17,7 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $filename = null;
 
-    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: 'images')]
     private ?Trick $trick = null;
 
     private ?UploadedFile $file = null;
@@ -27,7 +27,7 @@ class Image
         return $this->id;
     }
 
-    public function getFile() : ?UploadedFile
+    public function getFile(): ?UploadedFile
     {
         return $this->file;
     }
@@ -38,6 +38,7 @@ class Image
 
         return $this;
     }
+
     public function getFilename(): ?string
     {
         return $this->filename;
