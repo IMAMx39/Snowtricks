@@ -30,6 +30,14 @@ class TrickRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function save(Trick $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 
 
     //    /**

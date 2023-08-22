@@ -21,8 +21,8 @@
                     <article>
                         <header class="mb-4">
                             <h1 class="fw-bolder mb-1">{{ trick.name }}</h1>
-                            <div class="text-muted fst-italic mb-2">Date de creation
-                                le {{ trick.createdAt|date('d/m/Y H:i') }} </div>
+                            <div class="text-muted fst-italic mb-2">
+                                Créé le: {{ trick.createdAt|date('d/m/Y H:i') }} </div>
                             {% if trick.updatedAt %}
                                 <div class="text-muted fst-italic mb-2">Modifié
                                     le {{ trick.updatedAt|date('d/m/Y H:i') }} </div>
@@ -31,6 +31,7 @@
 
                         </header>
                         <figure class="mb-4"><img class="img-fluid rounded"
+                                    {#                                                  src="uploads/images/{{ trick.slug }}/{{ trick.images|first.filename }}" #}
                                                   src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
                                                   alt="..."/></figure>
                         <section class="mb-5">
@@ -71,6 +72,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                             {% endfor %}
                         </div>
                     </section>
