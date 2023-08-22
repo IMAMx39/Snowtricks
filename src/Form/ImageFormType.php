@@ -20,8 +20,8 @@ class ImageFormType extends AbstractType
                     new Assert\File([
                         'mimeTypes' => ['image/png', 'image/jpeg', 'image/bmp'],
                         'mimeTypesMessage' => "Mauvais format d'image (sont acceptés les fichier .png, .jpg ou .bmp)",
-                        'maxSize' => '10M',
-                        'maxSizeMessage' => "L'image est trop volumineuse (max: 10mb)"
+                        'maxSize' => '2M',
+                        'maxSizeMessage' => "L'image est trop volumineuse (max: 2mb)"
                     ]),
                 ],
                 'required'=> false,

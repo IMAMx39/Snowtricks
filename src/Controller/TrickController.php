@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
+use App\Service\FileUploader;
+use App\Service\ManagerFile;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,15 +25,26 @@ class TrickController extends AbstractController
     private TrickRepository $trickRepository;
     private CommentRepository $commentRepository;
     private EntityManagerInterface $entityManager;
+    private ManagerFile $fileManager;
+    private FileUploader $fileUploader;
 
-    public function __construct(TrickRepository $trickRepository, CommentRepository $commentRepository, EntityManagerInterface $entityManager)
+
+    public function __construct(
+        TrickRepository        $trickRepository,
+        CommentRepository      $commentRepository,
+        ManagerFile            $fileManager,
+        EntityManagerInterface $entityManager,
+        FileUploader $fileUploader
+    )
     {
         $this->trickRepository = $trickRepository;
         $this->commentRepository = $commentRepository;
         $this->entityManager = $entityManager;
+        $this->fileManager = $fileManager;
+        $this->fileUploader = $fileUploader;
     }
 
-    #[Route('/trick/new', name: 'app_trick_new',methods: ['GET', 'POST'])]
+    #[Route('/trick/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
     public function createTrick(Request $request): Response
     {
         $trick = new Trick();
@@ -38,9 +53,11 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = (new AsciiSlugger())->slug($trick->getName());
-
             $trick->setSlug($slug);
             $trick->setCreatedAt(new DateTimeImmutable());
+            $this->handleImages($form->get('images')->getData(), $trick);
+
+
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
@@ -56,6 +73,7 @@ class TrickController extends AbstractController
             'formTrick' => $form->createView()
         ]);
     }
+
     #[Route('/trick/{slug}', name: 'app_trick')]
     public function showTrick(Trick $trick, Request $request): Response
     {
@@ -65,7 +83,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request); // handle the request before checking if the form is submitted and valid
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData());
             $comment->setTrick($trick);
             $comment->setAuthor($this->getUser());
             $comment->setCreatedAt(new DateTimeImmutable());
@@ -80,13 +97,31 @@ class TrickController extends AbstractController
 
             return $this->redirectToRoute('app_trick', ['slug' => $trick->getSlug()]);
         }
-
+        $imagesUri = $this->getParameter('tricks_images_uri');
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
             'comments' => $comments,
+            'imagesUrl' => $imagesUri,
             'form' => $form->createView()
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
+    private function handleImages(mixed $images, Trick $trick): void
+    {
+        foreach ($images as $image) {
+            $pic = new Image();
+            $file = $image->getFile();
 
+            if ($file === null) {
+                continue;
+            }
+            $fileName = $this->fileUploader->upload($file);
+            $pic->setFileName($fileName);
+            $trick->addImage($pic);
+
+        }
+    }
 }

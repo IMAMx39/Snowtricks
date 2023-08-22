@@ -7,7 +7,9 @@ parameters:
     tricks_images_uri: '/uploads/images/'
     tricks_images_dir: '%kernel.project_dir%/public%tricks_images_uri%'
     avatars_uri: '/uploads/avatars/'
-    avatars_dir: '%kernel.project_dir%/public%avatars_uri%'
+    avatar_directory: '%kernel.project_dir%/public%avatars_uri%'
+    trick_uri: '/uploads/tricks/'
+    trick_directory: '%kernel.project_dir%/public%trick_uri%'
 
 
 services:
@@ -31,6 +33,9 @@ services:
     App\Service\ManagerFile:
         arguments:
             $tricksDir: '%tricks_images_dir%'
-            $avatarsDir: '%avatars_dir%'
+            $avatarDir: '%avatar_directory%'
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%trick_directory%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

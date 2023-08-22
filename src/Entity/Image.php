@@ -32,7 +32,7 @@ class Image
         return $this->file;
     }
 
-    public function setFile($file): self
+    public function setFile($file): static
     {
         $this->file = $file;
 

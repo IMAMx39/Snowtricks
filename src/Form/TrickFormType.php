@@ -46,14 +46,14 @@ class TrickFormType extends AbstractType
                 'allow_add' => true,
                 'entry_options' => ['label' => false],
                 'by_reference' => false,
-                'label' => 'Images'
+                'label' => false
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideoFormType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
-                'label' => 'Vidéos'
+                'label' => false
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
