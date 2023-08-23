@@ -15,7 +15,7 @@ class ImageFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('filename',FileType::class, [
+            ->add('file',FileType::class, [
                 'constraints' => [
                     new Assert\File([
                         'mimeTypes' => ['image/png', 'image/jpeg', 'image/bmp'],

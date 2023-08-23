@@ -44,6 +44,7 @@ class TrickFormType extends AbstractType
             ->add('images', CollectionType::class, [
                 'entry_type' => ImageFormType::class,
                 'allow_add' => true,
+                'mapped' => false,
                 'entry_options' => ['label' => false],
                 'by_reference' => false,
                 'label' => false
@@ -52,6 +53,7 @@ class TrickFormType extends AbstractType
                 'entry_type' => VideoFormType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
+                'mapped' => true,
                 'by_reference' => false,
                 'label' => false
             ])

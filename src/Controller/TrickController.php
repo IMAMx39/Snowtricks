@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
 use App\Service\ManagerFile;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +28,6 @@ class TrickController extends AbstractController
     private CommentRepository $commentRepository;
     private EntityManagerInterface $entityManager;
     private ManagerFile $fileManager;
-    private FileUploader $fileUploader;
 
 
     public function __construct(
@@ -34,14 +35,12 @@ class TrickController extends AbstractController
         CommentRepository      $commentRepository,
         ManagerFile            $fileManager,
         EntityManagerInterface $entityManager,
-        FileUploader $fileUploader
     )
     {
         $this->trickRepository = $trickRepository;
         $this->commentRepository = $commentRepository;
         $this->entityManager = $entityManager;
         $this->fileManager = $fileManager;
-        $this->fileUploader = $fileUploader;
     }
 
     #[Route('/trick/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
@@ -55,9 +54,7 @@ class TrickController extends AbstractController
             $slug = (new AsciiSlugger())->slug($trick->getName());
             $trick->setSlug($slug);
             $trick->setCreatedAt(new DateTimeImmutable());
-            $this->handleImages($form->get('images')->getData(), $trick);
-
-
+            $this->handleImages($form->get('images')->getData(), $slug, $trick);
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
@@ -80,7 +77,7 @@ class TrickController extends AbstractController
         $comments = $this->commentRepository->findComment($trick);
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request); // handle the request before checking if the form is submitted and valid
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setTrick($trick);
@@ -109,19 +106,18 @@ class TrickController extends AbstractController
     /**
      * @throws Exception
      */
-    private function handleImages(mixed $images, Trick $trick): void
+    private function handleImages(mixed $images, string $trickSlug, Trick $trick): void
     {
         foreach ($images as $image) {
-            $pic = new Image();
             $file = $image->getFile();
 
             if ($file === null) {
                 continue;
             }
-            $fileName = $this->fileUploader->upload($file);
-            $pic->setFileName($fileName);
-            $trick->addImage($pic);
 
+            $fileName = $this->fileManager->uploadTrickImage($file, $trickSlug);
+            $image->setFileName($fileName);
+            $trick->addImage($image);
         }
     }
 }

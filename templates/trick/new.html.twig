@@ -33,6 +33,16 @@
                             </div>
                         </div>
                         <hr>
+                        <div>
+                            <a class="add_item_link btn btn-info" data-collection-holder-class="videos">Ajouter une vidéo</a>
+                            <div class="videos" data-index="0"
+                                 data-prototype="{{ form_widget(formTrick.videos.vars.prototype)|e('html_attr') }}">
+
+                                {% for vid in formTrick.videos %}
+                                    <div>{{ form_row(vid.filename) }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
                         <div id="submit-btn">{{ form_row(formTrick.submit) }}</div>
 
                         {{ form_end(formTrick) }}
