@@ -17,6 +17,7 @@ class VideoFormType extends AbstractType
             ->add('filename', TextType::class, [
                 'attr' => ['placeholder' => "Entrez l'URL d'une vidéo Youtube"],
                 'required' => false,
+                'label' => false,
                 'constraints' => [
                     new Regex(['pattern' => "^((http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+)|(#TO_DELETE#)^", 'message' => 'L\'URL de la vidéo entrée n\'est pas valide ! Nous acceptons les vidéos provenant de Youtube uniquement.'])
                 ]
@@ -27,7 +28,6 @@ class VideoFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Video::class,
-            'label' => false
         ]);
     }
 }

@@ -31,7 +31,7 @@
 
                         </header>
                         <figure class="mb-4"><img class="img-fluid rounded"
-                                    {#                                                  src="uploads/images/{{ trick.slug }}/{{ trick.images|first.filename }}" #}
+{#                                                                                      src="{{ asset('uploads/tricks') }}/{{ trick.images|first.filename }}"#}
                                                   src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
                                                   alt="..."/></figure>
                         <section class="mb-5">
