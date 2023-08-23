@@ -15,7 +15,10 @@ class VideoFormType extends AbstractType
     {
         $builder
             ->add('filename', TextType::class, [
-                'attr' => ['placeholder' => "Entrez l'URL d'une vidéo Youtube"],
+                'attr' => [
+                    'placeholder' => "Entrez l'URL d'une vidéo Youtube",
+                    'class' => 'form-control mb-3'
+                ],
                 'required' => false,
                 'label' => false,
                 'constraints' => [

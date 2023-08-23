@@ -25,7 +25,8 @@ class ImageFormType extends AbstractType
                     ]),
                 ],
                 'required'=> false,
-                'label' => false
+                'label' => false,
+                'attr' => ['class' => 'form-control mb-3'],
             ])
         ;
     }
