@@ -74,7 +74,10 @@ class TrickController extends AbstractController
     #[Route('/trick/{slug}', name: 'app_trick')]
     public function showTrick(Trick $trick, Request $request): Response
     {
-        $comments = $this->commentRepository->findComment($trick);
+        // pagination
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $this->commentRepository->getCommentPaginator($trick, $offset);
+
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
@@ -97,9 +100,23 @@ class TrickController extends AbstractController
         $imagesUri = $this->getParameter('tricks_images_uri');
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-            'comments' => $comments,
+            'comments' => $paginator,
             'imagesUrl' => $imagesUri,
+            'offset' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE),
             'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/trick/{slug}/comments', name: 'app_trick_comment', methods: ['GET'])]
+    public function commentsTrick(Trick $trick,Request $request): Response
+    {
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $this->commentRepository->getCommentPaginator($trick, $offset);
+
+        return $this->render('trick/_comments.html.twig', [
+            'comments' => $paginator,
+            'offset' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE),
+            'trick' => $trick
         ]);
     }
 
