@@ -4,31 +4,46 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
+use App\Security\EmailVerifier;
+use App\Security\JWTToken;
 use App\Service\FileUploader;
 use App\Service\ManagerFile;
-use App\Service\UserService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
+
+    private EmailVerifier $emailVerifier;
+    private JWTToken $tokenJWT;
+
+    public function __construct(EmailVerifier $emailVerifier, JWTToken $tokenJWT)
+    {
+        $this->emailVerifier = $emailVerifier;
+        $this->tokenJWT = $tokenJWT;
+    }
+
     #[Route('/register', name: 'app_register')]
     public function register(
-        Request $request,
+        Request                     $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager,
-        ManagerFile $managerFile,
+        EntityManagerInterface      $entityManager,
+        ManagerFile                 $managerFile,
     ): Response
     {
+        $secret = $this->getParameter('app_secret');
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -51,7 +66,12 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('info',  $user->getUsername()."Votre compte à été bien creer veuillez vous connecter");
+            $expireHours = 4;
+            $token = $this->tokenJWT->generateToken(['user_email' => $user->getEmail()], $secret, $expireHours);
+
+            $this->emailVerifier->sendEmailConfirmationByToken($user, $token, $expireHours);
+
+            $this->addFlash('info', $user->getUsername() . " votre compte à été bien creer, veuillez vous connecter");
 
             return $this->redirectToRoute('app_register');
         }
@@ -59,5 +79,27 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/verify/{token}', name: 'app_verify_email', methods: ['GET'])]
+    public function verifyUserEmail(string $token, UserRepository $userRepository, EntityManagerInterface $manager): Response
+    {
+
+        $payload = $this->tokenJWT->getPayload($token);
+
+        $user = $userRepository->findOneBy(['email' => $payload['user_email']]);
+        if (!$user || $user->isVerified()) {
+            $this->addFlash('error', 'L\'utilisateur est déjà vérifié ou est invalide');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $user->setIsVerified(true);
+        $manager->persist($user);
+        $manager->flush();
+
+        // @TODO Change the redirect on success and handle or remove the flash message in your templates
+        $this->addFlash('success', 'Votre adresse email a bien été validée !');
+
+        return $this->redirectToRoute('app_home');
     }
 }

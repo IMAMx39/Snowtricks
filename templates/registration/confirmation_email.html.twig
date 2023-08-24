@@ -1,0 +1,11 @@
+<h1>Bonjour {{ user.username }}, confirmez votre adresse email !</h1>
+
+<p>
+    Cliquez sur le lien ci-dessous pour confirmer votre adresse email : <br><br>
+    <a href="{{ absolute_url(path('app_verify_email', {token: token}))  }}">Confirmer mon adresse email</a>.
+    Ce lien expirera dans {{ expireHours }}.
+</p>
+
+<p>
+    À bientôt sur SnowTricks !
+</p>

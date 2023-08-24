@@ -24,6 +24,9 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'label' => 'Nom d\'utilisateur',
+                'attr' => [
+                  'class' =>'form-control mb-3',
+                ],
                 'constraints' => [
                     new NotBlank(['message' => 'Vous devez entrez un nom']),
                     new Length([
@@ -33,15 +36,19 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('email', EmailType::class, [
+                'label' => 'Email',
                 'constraints' => [
                     new Assert\Email(['message' => "Le format de l'email n'est pas valide"])
-                ]
+                ],
+                'attr' => ['class' => 'form-control mb-3'],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                  'label' => 'Mot de passe',
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'class' => 'form-control mb-3'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -65,6 +72,7 @@ class RegistrationFormType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid PDF document',
                     ])
                 ],
+                'attr' => ['class' => 'form-control mb-3'],
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
