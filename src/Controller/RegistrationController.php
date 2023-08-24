@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Security\JWTToken;
 use App\Service\FileUploader;
 use App\Service\ManagerFile;
 use DateTimeImmutable;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,10 +27,12 @@ class RegistrationController extends AbstractController
 {
 
     private EmailVerifier $emailVerifier;
+    private JWTToken $tokenJWT;
 
-public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailVerifier $emailVerifier, JWTToken $tokenJWT)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->tokenJWT = $tokenJWT;
     }
 
     #[Route('/register', name: 'app_register')]
@@ -39,6 +43,7 @@ public function __construct(EmailVerifier $emailVerifier)
         ManagerFile                 $managerFile,
     ): Response
     {
+        $secret = $this->getParameter('app_secret');
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -61,17 +66,11 @@ public function __construct(EmailVerifier $emailVerifier)
 
             $entityManager->persist($user);
             $entityManager->flush();
-            
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                ->from(new Address('imam@snowtrocks.com'))
-                ->to($user->getEmail())
-                ->subject('Please Confirm your Email')
-                ->htmlTemplate('registration/confirmation_email.html.twig')
-                ->context(compact('user'))
-            );
-            
+            $expireHours = 4;
+            $token = $this->tokenJWT->generateToken(['user_email' => $user->getEmail()], $secret, $expireHours);
+
+            $this->emailVerifier->sendEmailConfirmationByToken($user, $token, $expireHours);
+
             $this->addFlash('info', $user->getUsername() . " votre compte à été bien creer, veuillez vous connecter");
 
             return $this->redirectToRoute('app_register');
@@ -81,22 +80,19 @@ public function __construct(EmailVerifier $emailVerifier)
             'registrationForm' => $form->createView(),
         ]);
     }
-    #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, UserRepository $userRepository, TranslatorInterface $translator,EntityManagerInterface $manager): Response
+
+    #[Route('/verify/{token}', name: 'app_verify_email', methods: ['GET'])]
+    public function verifyUserEmail(string $token, UserRepository $userRepository, EntityManagerInterface $manager): Response
     {
-        $user = $userRepository->find($request->query->get('id'));
-        if (!$user) {
-            throw $this->createNotFoundException();
+
+        $payload = $this->tokenJWT->getPayload($token);
+
+        $user = $userRepository->findOneBy(['email' => $payload['user_email']]);
+        if (!$user || $user->isVerified()) {
+            $this->addFlash('error', 'L\'utilisateur est déjà vérifié ou est invalide');
+            return $this->redirectToRoute('app_login');
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
-            return $this->redirectToRoute('app_register');
-        }
         $user->setIsVerified(true);
         $manager->persist($user);
         $manager->flush();
