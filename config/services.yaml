@@ -10,6 +10,7 @@ parameters:
     avatar_directory: '%kernel.project_dir%/public%avatars_uri%'
     trick_uri: '/uploads/tricks/'
     trick_directory: '%kernel.project_dir%/public%trick_uri%'
+    app_secret: '%env(APP_SECRET)%'
 
 
 services:

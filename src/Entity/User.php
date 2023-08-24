@@ -28,7 +28,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = ['ROLE_USER'];
 
     /**
-     * @var string The hashed password
+     * @var !string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
@@ -147,7 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsVerified(): ?bool
+    public function isVerified(): ?bool
     {
         return $this->isVerified;
     }
