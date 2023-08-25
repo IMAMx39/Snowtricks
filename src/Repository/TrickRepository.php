@@ -44,6 +44,14 @@ class TrickRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+    public function existingTrick(string $slug)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.'.$slug)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function save(Trick $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

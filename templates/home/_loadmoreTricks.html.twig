@@ -16,11 +16,11 @@
                 <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                     <div class="d-flex align-items-end justify-content-between">
                         <div class="d-flex align-items-center">
-                            <a class="button" href="">
+                            <button class="button btn-primary" href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
                                 <img src="/medias/icons/pencil.png" alt="Modifier le trick"/>
-                            </a>
+                            </button>
                             <div class="small">
-                                <div class="fw-bold">Modifier le trick</div>
+                                <div  class="fw-bold">Modifier le trick</div>
                                 <div class="text-muted">Publiée le: {{ trick.createdAt|date('d/m/Y H:i') }}</div>
                             </div>
                         </div>

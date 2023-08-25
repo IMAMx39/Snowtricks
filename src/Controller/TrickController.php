@@ -3,44 +3,31 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\Image;
 use App\Entity\Trick;
-use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
-use App\Service\FileUploader;
 use App\Service\ManagerFile;
-use Doctrine\Common\Collections\ArrayCollection;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use DateTimeImmutable;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class TrickController extends AbstractController
 {
-    private TrickRepository $trickRepository;
-    private CommentRepository $commentRepository;
-    private EntityManagerInterface $entityManager;
-    private ManagerFile $fileManager;
-
-
     public function __construct(
-        TrickRepository        $trickRepository,
-        CommentRepository      $commentRepository,
-        ManagerFile            $fileManager,
-        EntityManagerInterface $entityManager,
+        private readonly TrickRepository        $trickRepository,
+        private readonly CommentRepository      $commentRepository,
+        private readonly ManagerFile            $fileManager,
+        private readonly EntityManagerInterface $entityManager,
     )
     {
-        $this->trickRepository = $trickRepository;
-        $this->commentRepository = $commentRepository;
-        $this->entityManager = $entityManager;
-        $this->fileManager = $fileManager;
     }
 
     #[Route('/trick/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
@@ -54,6 +41,14 @@ class TrickController extends AbstractController
             $slug = (new AsciiSlugger())->slug($trick->getName());
             $trick->setSlug($slug);
             $trick->setCreatedAt(new DateTimeImmutable());
+            $existing = $this->trickRepository->existingTrick($slug);
+            if (!empty($existing)) {
+                $form->addError(new FormError("Ce titre est indisponible"));
+                return $this->render('trick/new.html.twig', [
+                    'formTrick' => $form->createView()
+                ]);
+            }
+
             $this->handleImages($form->get('images')->getData(), $slug, $trick);
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
@@ -108,7 +103,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/{slug}/comments', name: 'app_trick_comment', methods: ['GET'])]
-    public function commentsTrick(Trick $trick,Request $request): Response
+    public function commentsTrick(Trick $trick, Request $request): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $this->commentRepository->getCommentPaginator($trick, $offset);
@@ -119,6 +114,38 @@ class TrickController extends AbstractController
             'trick' => $trick
         ]);
     }
+
+    #[Route('/trick/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Trick $trick): Response
+    {
+        $picturesUri = $this->getParameter('tricks_images_uri');
+        $editTrickForm = $this->createForm(TrickFormType::class, $trick);
+        $trickTitle = $trick->getName();
+        $editTrickForm->handleRequest($request);
+        if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
+            $slug = (new AsciiSlugger())->slug($trick->getName());
+            $oldSlug = $trick->getSlug();
+            $trick->setSlug($slug);
+            $trick->setUpdatedAt(new DateTimeImmutable());
+            $this->fileManager->renameTrickPicsDir($oldSlug, $slug);
+            $this->handleImages($editTrickForm->get('images')->getData(), $slug, $trick);
+
+            $this->entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Le trick "' . $trickTitle . '" a bien été modifié'
+            );
+            return $this->redirectToRoute('app_trick', ['slug' => $slug]);
+        }
+
+        return $this->render('trick/edit.html.twig', [
+            'trick' => $trick,
+            'picturesUri' => $picturesUri,
+            'formTrick' => $editTrickForm->createView(),
+        ]);
+
+    }
+
 
     /**
      * @throws Exception
