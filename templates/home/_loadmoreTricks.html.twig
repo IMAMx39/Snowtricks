@@ -2,32 +2,36 @@
     {% for trick in tricks %}
         {% set defaultImage = trick.images is empty %}
 
-        <div class="col-lg-4 mb-5">
-            <div class="card h-100 shadow border-0">
-                <img class="card-img-top"
-                        {# src="uploads/images/{{ trick.slug }}/{{ trick.images|first.filename }}"#}
+        <div class="col-lg-3 mb-5">
+            <div class="card h-100  shadow border-0">
+                <img class="card-tricks card-img-bottom"
+                        {# src="uploads/images/{{ trick.slug }}/{{ trick.images|first.filename }}" #}
                      src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
                      alt="..."/>
                 <div class="card-body p-4">
-                    <a class="text-decoration-none link-dark stretched-link" href="{{ path('app_trick', {'slug': trick.slug}) }}"><h5
+                    <a class="text-decoration-none link-dark stretched-link"
+                       href="{{ path('app_trick', {'slug': trick.slug}) }}"><h5
                                 class="card-title mb-3">{{ trick.name }}</h5>
                     </a>
                 </div>
                 <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                    <div class="d-flex align-items-end justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <button class="button btn-primary" href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
-                                <img src="/medias/icons/pencil.png" alt="Modifier le trick"/>
-                            </button>
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between">
                             <div class="small">
-                                <div  class="fw-bold">Modifier le trick</div>
+                                <div class="fw-bold">Modifier le trick</div>
                                 <div class="text-muted">Publiée le: {{ trick.createdAt|date('d/m/Y H:i') }}</div>
+                            </div>
+                            <div class="z-index-100">
+                                <a class="btn  btn-block mb-3 text-center"
+                                   href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
+                                    <i class="bi bi-pencil fs-3"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     {% endfor %}
     <a id="load-more">
         <div colspan="3">
@@ -39,5 +43,6 @@
             </button>
         </div>
     </a>
-</div><!-- End -->
+</div>
+<!-- End -->
 

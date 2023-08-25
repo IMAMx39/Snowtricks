@@ -1276,7 +1276,7 @@ progress {
   }
   .col-lg-3 {
     flex: 0 0 auto;
-    width: 25%;
+    width: 20%;
   }
   .col-lg-4 {
     flex: 0 0 auto;
@@ -10861,4 +10861,59 @@ html {
   width: 100%;
   height: 100%;
   z-index: -1;
+}
+
+/*!*** Trick-Cards ***!*/
+/*#tricks {*/
+/*  margin: 2rem auto 4rem auto;*/
+/*  max-width: 1600px;*/
+/*  display: flex;*/
+/*  flex-wrap: wrap;*/
+/*}*/
+
+/*.trick-card {*/
+/*  flex: 1 0 21%;*/
+/*  padding: 0.8rem 1.5rem;*/
+/*  max-width: 20%;*/
+/*}*/
+
+/*.trick-card .top img {*/
+/*  width: 100%;*/
+/*  height: 160px;*/
+/*  border: 2px solid #1b1b1b;*/
+/*}*/
+
+/*.trick-card .bottom {*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  padding: 0.6em;*/
+/*  width: 100%;*/
+/*  border: 1px solid #1b1b1b;*/
+/*}*/
+
+/*.trick-card .bottom .link {*/
+/*  font-size: 13pt;*/
+/*}*/
+
+/*.trick-buttons {*/
+/*  display: flex;*/
+/*}*/
+
+/*.trick-card .bottom .button {*/
+/*  text-decoration: none;*/
+/*}*/
+
+/*.trick-card .bottom .button img {*/
+/*  width: 24px;*/
+/*}*/
+
+
+.card-tricks {
+  object-fit: cover;
+  width: 100%;
+  height: 20rem;
+
+}
+.z-index-100{
+  z-index: 100 !important;
 }

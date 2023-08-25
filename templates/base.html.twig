@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    {% endblock %}
+    <body>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
@@ -37,9 +41,7 @@
         </div>
     </nav>
 
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    {% endblock %}
+
 
     {% block javascripts %}
         <script src="{{ asset('js/scripts.js') }}"></script>
@@ -51,8 +53,9 @@
         <!-- Core theme JS-->
         <script src="../../public/js/scripts.js"></script>
     {% endblock %}
-</head>
-<body>
-{% block body %}{% endblock %}
+
+
+{% block body %}
+{% endblock %}
 </body>
 </html>
