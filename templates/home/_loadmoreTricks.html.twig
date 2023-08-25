@@ -1,4 +1,4 @@
-<div class="row gx-5">
+<div class="row gx-5 position-relative">
     {% for trick in tricks %}
         {% set defaultImage = trick.images is empty %}
 
@@ -25,6 +25,11 @@
                                 <a class="btn  btn-block mb-3 text-center"
                                    href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
                                     <i class="bi bi-pencil fs-3"></i></a>
+                            </div>
+                            <div class="z-index-100">
+                                <a class="btn  btn-block mb-3 text-center"
+                                   href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
+                                    <i class="bi bi-trash-fill fs-3"></i></a>
                             </div>
                         </div>
                     </div>
