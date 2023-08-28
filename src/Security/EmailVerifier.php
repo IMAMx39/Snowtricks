@@ -31,4 +31,22 @@ class EmailVerifier
             ]);
         $this->mailer->send($email);
     }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function sendResetEmail(User $user, string $token, int $expireHours): void
+    {
+        $email = (new TemplatedEmail())
+            ->from('reset_password@snowtricks.com')
+            ->to($user->getEmail())
+            ->subject('Demande de réinitialisation du mot de passe')
+            ->htmlTemplate('reset_password/reset_password_email.html.twig')
+            ->context([
+                'user' => $user,
+                'token' => $token,
+                'expireHours' => $expireHours,
+            ]);
+        $this->mailer->send($email);
+    }
 }
