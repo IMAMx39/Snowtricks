@@ -7,20 +7,20 @@
     <section class="py-5 position-relative">
         <div class="container px-5 my-5">
             <div class="row gx-5">
-                <div class="col-lg-3">
-                    <div class="d-flex align-items-center mt-lg-5 mb-4">
-                        <img class="img-fluid rounded-circle" src="{{ asset('../assets/img/profile.png') }}"
-                             alt="..."/>
-                        <div class="ms-3">
-                            <div class="fw-bold">Valerie Luna</div>
-                            <div class="text-muted">News, Business</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
+                {#                <div class="col-lg-3"> #}
+                {#                    <div class="d-flex align-items-center mt-lg-5 mb-4"> #}
+                {#                        <img class="img-fluid rounded-circle" src="{{ asset('../assets/img/profile.png') }}" #}
+                {#                             alt="..."/> #}
+                {#                        <div class="ms-3"> #}
+                {#                            <div class="fw-bold">Valerie Luna</div> #}
+                {#                            <div class="text-muted">News, Business</div> #}
+                {#                        </div> #}
+                {#                    </div> #}
+                {#                </div> #}
+                <div class="col-lg-12">
                     <article>
                         <header class="mb-4">
-                            <h1 class="fw-bolder mb-1">{{ trick.name }}</h1>
+                            <h1 class="fw-bolder mb-1 text-centerr">{{ trick.name }}</h1>
                             <div class="text-muted fst-italic mb-2">
                                 Créé le: {{ trick.createdAt|date('d/m/Y H:i') }} </div>
                             {% if trick.updatedAt %}
@@ -30,10 +30,27 @@
                             <a class="badge bg-info text-decoration-none link-light">Groupe: {{ trick.category.name }} </a>
 
                         </header>
-                        <figure class="mb-4"><img class="img-fluid rounded"
-                                    {#                                                                                      src="{{ asset('uploads/tricks') }}/{{ trick.images|first.filename }}" #}
+                        <figure class="mb-4 me-3 d-flex">
+                            <img class="img-fluid rounded card-trick-show"
+                                    {# src="{{ asset('uploads/tricks') }}/{{ trick.images|first.filename }}" #}
                                                   src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
-                                                  alt="..."/></figure>
+                                                  alt="image de trick {{ trick.name|raw }}"/>
+                        </figure>
+
+                        <div class="d-flex overflow-scroll">
+                            {% for pic in trick.images %}
+                                <div class="col-lg-3 ">
+                                    <figure class="mb-4 me-3 d-flex">
+                                        <img class="img-fluid rounded card-img-bottom card-tricks "
+                                                              src="{{ imagesUrl ~ trick.slug ~ "/" ~ pic.fileName }}"
+                                                              alt="image de trick {{ trick.name }}"/>
+                                    </figure>
+                                </div>
+                            {% endfor %}
+                            {% for video in trick.videos %}
+                                <iframe class="me-3 d-flex " src="{{ video.filename }}?autoplay=0" ></iframe>
+                            {% endfor %}
+                        </div>
                         <section class="mb-5">
                             <p class="fs-5 mb-4">{{ trick.description }}.</p>
                         </section>
