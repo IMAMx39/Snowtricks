@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    <h1 class="text-center my-5 fw-bolder">User index</h1>
+    <div class="container">
+        <table class="table-primary table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Email</th>
+                <th scope="col">Avatar</th>
+                <th scope="col">Activé</th>
+                <th scope="col">actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr id="load-more">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.avatarFileName }}</td>
+                    <td>{{ user.verified ? 'Oui' : 'Non' }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('app_user_profile', {'id': user.id}) }}">voir</a>
+                        <a class="btn btn-danger" href="{{ path('app_user_profile', {'id': user.id}) }}">supprimer</a>
+{#                                            <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>#}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    <a>
+            <button class="btn btn-primary btn-block mb-3 text-center"
+                    hx-get="{{ path('app_loadmore_users', { offset: offset  }) }}"
+                    hx-swap="outerHTML"
+            >
+                Load More...
+            </button>
+    </a>
+
+{#    {% include 'user/_loadmore_users.html.twig' %}#}
+
+{% endblock %}
