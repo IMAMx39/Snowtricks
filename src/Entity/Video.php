@@ -29,9 +29,13 @@ class Video
         return $this->filename;
     }
 
-    public function setFilename(?string $filename): static
+    public function setFilename(?string $videoUrl): static
     {
-        $this->filename = str_replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/', $filename);
+        if (str_contains($videoUrl, '/embed/')) {
+            $this->filename = $videoUrl;
+            return $this;
+        }
+        $this->filename = str_replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/', $videoUrl);
         return $this;
     }
 

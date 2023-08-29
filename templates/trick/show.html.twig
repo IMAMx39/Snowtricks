@@ -37,7 +37,7 @@
                                  alt="image de trick {{ trick.name|raw }}"/>
                         </figure>
 
-                        <div class="d-flex overflow-scroll">
+                        <div class="d-flex overflow-scroll mb-5">
                             {% for pic in trick.images %}
                                 <div class="col-lg-3 ">
                                     <figure class="mb-4 me-3 d-flex">
@@ -51,9 +51,10 @@
                                 <iframe class="me-3 d-flex " src="{{ video.filename }}?autoplay=0"></iframe>
                             {% endfor %}
                         </div>
-                        <section class="mb-5">
-                            <p class="fs-5 mb-4">{{ trick.description }}.</p>
-                        </section>
+                        <hr>
+                        <div class="mb-5">
+                            <p class="fs-5 mb-4 text-center">{{ trick.description }}.</p>
+                        </div>
                     </article>
 
                     <!-- Comments section-->
