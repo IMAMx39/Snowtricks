@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <h1 class="not-italic font-sans font-semibold">User Profile</h1>
+
+    <div class="text-center">
+        {% set avatar = asset('images/users_pictures/default.jpg') %}
+        <div class="flex justify-center">
+            <img src="{{ avatar }}" class="mb-6 rounded-full h-20"/>
+        </div>
+
+        <div class="flex flex-col mt-4 mb-4 px-8">
+            <p class="text-lg">Your Id:</p>
+            <p class="italic">{{ user.id }}</p>
+        </div>
+
+        <div class="flex flex-col mb-4 px-8">
+            <p class="text-lg">Votre non d'utilisateur:</p>
+            <p class="italic">{{ user.username }}</p>
+        </div>
+
+        <div class="flex flex-col mb-4 px-8">
+            <p class="text-lg">Votre adresse email:</p>
+            <p class="italic">{{ user.email }}</p>
+        </div>
+
+{#        {{ include('user/_delete_form.html.twig') }}#}
+    </div>
+{% endblock %}
+
+
+

@@ -41,7 +41,7 @@ class TrickController extends AbstractController
             $slug = (new AsciiSlugger())->slug($trick->getName());
             $trick->setSlug($slug);
             $trick->setCreatedAt(new DateTimeImmutable());
-            $existing = $this->trickRepository->existingTrick($slug);
+            $existing = $this->trickRepository->findBy(['slug' => $slug]);
             if (!empty($existing)) {
                 $form->addError(new FormError("Ce titre est indisponible"));
                 return $this->render('trick/new.html.twig', [
@@ -144,6 +144,16 @@ class TrickController extends AbstractController
             'formTrick' => $editTrickForm->createView(),
         ]);
 
+    }
+
+    #[Route('/trick/{slug}/delete', name: 'app_trick_delete')]
+    public function delete(Trick $trick): Response
+    {
+        $this->trickRepository->remove($trick, true);
+        $this->fileManager->removeTrickPicsDir($trick->getSlug());
+        $this->addFlash('success', 'Le trick "' . $trick->getName() . '" a bien été supprimé');
+
+        return $this->redirectToRoute('app_home');
     }
 
 
