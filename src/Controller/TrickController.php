@@ -146,6 +146,16 @@ class TrickController extends AbstractController
 
     }
 
+    #[Route('/trick/{slug}/delete', name: 'app_trick_delete')]
+    public function delete(Trick $trick): Response
+    {
+        $this->trickRepository->remove($trick, true);
+        $this->fileManager->removeTrickPicsDir($trick->getSlug());
+        $this->addFlash('success', 'Le trick "' . $trick->getName() . '" a bien été supprimé');
+
+        return $this->redirectToRoute('app_home');
+    }
+
 
     /**
      * @throws Exception

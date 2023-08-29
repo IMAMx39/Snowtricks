@@ -33,8 +33,8 @@
                         <figure class="mb-4 me-3 d-flex">
                             <img class="img-fluid rounded card-trick-show"
                                     {# src="{{ asset('uploads/tricks') }}/{{ trick.images|first.filename }}" #}
-                                                  src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
-                                                  alt="image de trick {{ trick.name|raw }}"/>
+                                 src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
+                                 alt="image de trick {{ trick.name|raw }}"/>
                         </figure>
 
                         <div class="d-flex overflow-scroll">
@@ -42,13 +42,13 @@
                                 <div class="col-lg-3 ">
                                     <figure class="mb-4 me-3 d-flex">
                                         <img class="img-fluid rounded card-img-bottom card-tricks "
-                                                              src="{{ imagesUrl ~ trick.slug ~ "/" ~ pic.fileName }}"
-                                                              alt="image de trick {{ trick.name }}"/>
+                                             src="{{ imagesUrl ~ trick.slug ~ "/" ~ pic.fileName }}"
+                                             alt="image de trick {{ trick.name }}"/>
                                     </figure>
                                 </div>
                             {% endfor %}
                             {% for video in trick.videos %}
-                                <iframe class="me-3 d-flex " src="{{ video.filename }}?autoplay=0" ></iframe>
+                                <iframe class="me-3 d-flex " src="{{ video.filename }}?autoplay=0"></iframe>
                             {% endfor %}
                         </div>
                         <section class="mb-5">
