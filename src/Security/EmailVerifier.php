@@ -7,7 +7,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
-class EmailVerifier
+readonly class EmailVerifier
 {
 
     public function __construct(private MailerInterface $mailer,)
@@ -20,9 +20,9 @@ class EmailVerifier
     public function sendEmailConfirmationByToken(User $user, string $token, int $expireHours): void
     {
         $email = (new TemplatedEmail())
-            ->from('p6-snowtricks@oc.fr')
+            ->from('no-replayd@snowtricks.com')
             ->to($user->getEmail())
-            ->subject('Please Confirm your Email')
+            ->subject('Confirmation de votre compte')
             ->htmlTemplate('registration/confirmation_email.html.twig')
             ->context([
                 'user' => $user,

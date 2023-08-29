@@ -30,7 +30,7 @@
                                  data-prototype="{{ form_widget(formTrick.images.vars.prototype)|e('html_attr') }}">
 
                                 {% for image in formTrick.images %}
-                                    <div>{{ form_row(image.filename) }}</div>
+                                    <div>{{ form_row(image.file) }}</div>
                                 {% endfor %}
                             </div>
                         </div>

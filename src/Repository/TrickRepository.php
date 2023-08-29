@@ -47,14 +47,14 @@ class TrickRepository extends ServiceEntityRepository
     public function existingTrick(string $slug)
     {
         return $this->createQueryBuilder('t')
-            ->select('t.'.$slug)
+            ->select('t.' . $slug)
             ->getQuery()
             ->getResult();
     }
 
-    public function save(Trick $entity, bool $flush = false): void
+    public function remove(Trick $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->remove($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();

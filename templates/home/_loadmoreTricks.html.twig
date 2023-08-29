@@ -24,12 +24,14 @@
                             <div class="z-index-100">
                                 <a class="btn  btn-block mb-3 text-center"
                                    href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
-                                    <i class="bi bi-pencil fs-3"></i></a>
+                                    <i class="bi bi-pencil fs-3"></i>
+                                </a>
                             </div>
                             <div class="z-index-100">
-                                <a class="btn  btn-block mb-3 text-center"
-                                   href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
-                                    <i class="bi bi-trash-fill fs-3"></i></a>
+                                <a class="btn btn-outline-danger btn-block mb-3 text-center"
+                                   href="{{ path('app_trick_delete', {'slug': trick.slug}) }}">
+                                    <i class="bi colored bi-trash-fill fs-3"></i>
+                                </a>
                             </div>
                             {% endif %}
                         </div>
