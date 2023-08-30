@@ -12518,3 +12518,19 @@ html {
 .header {
     height: 1000px;
 }
+
+.user-card {
+    display: flex;
+    gap: 1em;
+    border: 1px solid lightgrey;
+    justify-content: center;
+    width: 75vw;
+    max-width: 900px;
+    flex-wrap: wrap;
+    border-radius: 15px;
+}
+
+.user {
+    flex-basis: 20%;
+}
+

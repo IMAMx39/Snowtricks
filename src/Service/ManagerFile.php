@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use Exception;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,7 +16,7 @@ class ManagerFile
     private string $avatarDir;
 
 
-    public function __construct(SluggerInterface $slugger, Filesystem $filesystem, string $tricksDir, string $avatarDir, private readonly LoggerInterface $logger)
+    public function __construct(SluggerInterface $slugger, Filesystem $filesystem, string $tricksDir, string $avatarDir)
     {
         $this->slugger = $slugger;
         $this->filesystem = $filesystem;
@@ -97,8 +96,8 @@ class ManagerFile
 
     public function deleteAvatar(string $fileName): void
     {
-        $targetPicture = $this->avatarDir . $fileName;
-        $this->removeFileIfExists($targetPicture);
+        $targetDir = $this->avatarDir . $fileName;
+        $this->removeFileIfExists($targetDir);
     }
 
 
@@ -108,6 +107,9 @@ class ManagerFile
         $this->removeFileIfExists($targetDir);
     }
 
+    /**
+     * @throws Exception
+     */
     private function upload(UploadedFile $file, string $targetDir): string
     {
         $originalFilename = $file->getClientOriginalName();

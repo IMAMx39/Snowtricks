@@ -42,7 +42,7 @@ class RegistrationController extends AbstractController
             $avatarFile = $form->get('avatar')->getData();
             if ($avatarFile) {
                 $newFilename = $managerFile->uploadAvatar($avatarFile);
-                $user->setAvatarFileName($newFilename);
+                $user->setAvatar($newFilename);
             }
             $user->setCreatedAt(new DateTimeImmutable);
             $user->setIsVerified(false);
@@ -60,9 +60,9 @@ class RegistrationController extends AbstractController
 
             $this->emailVerifier->sendEmailConfirmationByToken($user, $token, $expireHours);
 
-            $this->addFlash('info', $user->getUsername() . " votre compte à été bien creer, veuillez vous connecter");
+            $this->addFlash('info', $user->getUsername() . " votre compte à été bien créer, veuillez vous confirmer votre compte par le lien envoyé à votre adresse email");
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -86,9 +86,8 @@ class RegistrationController extends AbstractController
         $manager->persist($user);
         $manager->flush();
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_login');
     }
 }

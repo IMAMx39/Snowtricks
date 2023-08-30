@@ -75,7 +75,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['class' => 'form-control mb-3'],
             ])
             ->add('submit', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => ['class' => 'btn btn-primary mb-3'],
                 'label' => 'Créer un compte'
             ]);
     }

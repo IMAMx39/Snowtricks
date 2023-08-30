@@ -53,4 +53,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return new Paginator($query);
     }
 
+    public function findByRole(array $roles) : array
+    {
+        if (empty($roles)) {
+            return []; // No roles provided, return an empty array or handle as needed
+        }
+        $query = $this->createQueryBuilder('u');
+
+        $orExpressions = [];
+        foreach ($roles as $key => $role) {
+            $paramName = 'role'.$key;
+            $orExpressions[] = $query->expr()->like('u.roles', ':'.$paramName);
+            $query->setParameter($paramName, '%"'.$role.'"%');
+        }
+
+        $query->andWhere($query->expr()->orX(...$orExpressions));
+
+        return $query->getQuery()->getResult();
+    }
+
 }
