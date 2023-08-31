@@ -39,7 +39,7 @@ class TrickFormType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'label' => 'Catégorie',
-                'attr' => ['class' => 'form-control mb-3'],
+                'attr' => ['class' => 'form-select mb-3'],
             ])
             ->add('images', CollectionType::class, [
                 'entry_type' => ImageFormType::class,

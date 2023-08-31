@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de profile{% endblock %}
+
+{% block body %}
+    <div class="text-center mb-5">
+        <h1 class="fw-bolder mb-3">Mon profile</h1>
+    </div>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+{#    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>#}
+
+    <!--Only for demo purpose - no need to add.-->
+    <section>
+        <div class=" rt-container">
+            <div class="col-rt-12">
+                <div class="Scriptcontent">
+
+                    <!-- Student Profile -->
+                    <div class="student-profile py-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-transparent text-center">
+                                            <img class="profile_img" src="{{ user.avatar is empty ? avatar ~ "avatar.png" : avatar ~ user.avatar }}" alt="student dp">
+                                        </div>
+                                        <div class="card-body ">
+                                            <p class="mb-0 text-center"><strong class="pr-1 ">ID de l'utilisateur: </strong>{{ user.id }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-transparent border-0">
+                                            <h3 class="mb-0"><i class="bi bi-info-circle"></i> Information génerale</h3>
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <table class="table table-success table-striped">
+                                                <tr>
+                                                    <th>Identifiant</th>
+                                                    <td>{{ user.username }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Adresse email</th>
+                                                    <td>{{ user.email }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Date de création</th>
+                                                    <td> {{ user.createdAt|date("d/m/Y") }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Coomantaire</th>
+                                                    <td>{{ user.comments|length }}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="container d-flex justify-content-around">
+                                            <button class="btn btn-primary mb-1">Modifier mes informations</button>
+                                            <button class="btn btn-danger mb-1">Supprimer mon compte</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- partial -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+

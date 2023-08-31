@@ -12528,9 +12528,69 @@ html {
     max-width: 900px;
     flex-wrap: wrap;
     border-radius: 15px;
+    flex-direction: column;
 }
 
 .user {
-    flex-basis: 20%;
+    flex-basis: 40%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
+.img-profile {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: grey;
+}
+.img-users {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: grey;
+}
+.com-trick-date {
+    float: right;
+}
+
+.com-trick-title {
+    display: inline;
+}
+
+
+/*   profile page    */
+
+.student-profile .card {
+    border-radius: 10px;
+}
+
+.student-profile .card .card-header .profile_img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 10px auto;
+    border: 10px solid #ccc;
+    border-radius: 50%;
+}
+
+.student-profile .card h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.student-profile .card p {
+    font-size: 16px;
+    color: #000;
+}
+
+.student-profile .table th,
+.student-profile .table td {
+    font-size: 14px;
+    padding: 5px 10px;
+    color: #000;
+}
