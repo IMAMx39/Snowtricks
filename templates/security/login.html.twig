@@ -14,20 +14,14 @@
             <div class="col-md-4 col-sm-8">
                 <form method="post">
                     {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
-
-                    {% if app.user %}
-                        <div class="mb-3">
-                            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                        </div>
+                        <div class="alert alert-danger">Identifiants invalides.</div>
                     {% endif %}
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
-                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-                        <label for="email">Adresse email</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">Adresse email obligatoire.</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">L'adresse email n'est pas valide.</div>
+                        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+                        <label for="inputUsername">Identifiant</label>
+                        <div class="invalid-feedback" data-sb-feedback="username:required">Identifiant obligatoire.</div>
+                        <div class="invalid-feedback" data-sb-feedback="username:username">Identifiant n'est pas valide.</div>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>

@@ -72,12 +72,12 @@ class ResetPasswordController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route('/forgot-password', name: 'app_forgot_password')]
-    public function forgotPassword(UserRepository $userRepo, Request $req): Response
+    public function forgotPassword(Request $request): Response
     {
         $form = $this->createForm(ResetPasswordFormType::class);
-        $form->handleRequest($req);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $userRepo->findOneBy(['email' => $form->getData()]);
+            $user = $this->userRepository->findOneBy(['username' => $form->getData()]);
 
             $this->addFlash('info', "Un e-mail sera envoyé à cet utilisateur s'il existe.");
 
