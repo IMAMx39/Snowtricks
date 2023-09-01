@@ -10,11 +10,6 @@
 {#    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>#}
 
     <!--Only for demo purpose - no need to add.-->
-    <section>
-        <div class=" rt-container">
-            <div class="col-rt-12">
-                <div class="Scriptcontent">
-
                     <!-- Student Profile -->
                     <div class="student-profile py-4">
                         <div class="container">
@@ -22,7 +17,7 @@
                                 <div class="col-lg-4">
                                     <div class="card shadow-sm">
                                         <div class="card-header bg-transparent text-center">
-                                            <img class="profile_img" src="{{ user.avatar is empty ? avatar ~ "avatar.png" : avatar ~ user.avatar }}" alt="student dp">
+                                            <img class="profile_img" src="{{ user.avatar is empty ? avatar ~ "default.png" : avatar ~ user.avatar }}" alt="student dp">
                                         </div>
                                         <div class="card-body ">
                                             <p class="mb-0 text-center"><strong class="pr-1 ">ID de l'utilisateur: </strong>{{ user.id }}</p>
@@ -63,13 +58,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- partial -->
-
-                </div>
-            </div>
-        </div>
-    </section>
-
 {% endblock %}
 
 
