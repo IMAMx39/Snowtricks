@@ -39,13 +39,18 @@ class TrickFormType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'label' => 'Catégorie',
-                'attr' => ['class' => 'form-select mb-3'],
+                'attr' => [
+                    'class' => 'form-select mb-3'
+                ],
             ])
             ->add('images', CollectionType::class, [
                 'entry_type' => ImageFormType::class,
                 'allow_add' => true,
-                'mapped' => false,
-                'entry_options' => ['label' => false],
+                'allow_delete' => true,
+//                'mapped' => false,
+                'entry_options' => [
+                    'label' => false
+                ],
                 'by_reference' => false,
                 'label' => false
             ])
@@ -59,7 +64,6 @@ class TrickFormType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
-
                 'label' => 'Enregistrer'
             ]);
     }

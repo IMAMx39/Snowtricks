@@ -47,14 +47,14 @@
 
 
     {% block javascripts %}
-        <script src="{{ asset('js/scripts.js') }}"></script>
+        <script src="{{ asset('js/scripts.js') }}" ></script>
+        <script src="{{ asset('js/load_trick_field.js') }}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jarallax@2/dist/jarallax.min.js"></script>
         <script src="https://unpkg.com/htmx.org@1.9.4"></script>
         <!-- Optional video extension -->
         <script src="https://cdn.jsdelivr.net/npm/jarallax@2/dist/jarallax-video.min.js"></script>
         <!-- Core theme JS-->
-        <script src="../../public/js/scripts.js"></script>
     {% endblock %}
 
 
