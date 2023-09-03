@@ -12547,6 +12547,7 @@ html {
     object-fit: cover;
     background: grey;
 }
+
 .img-users {
     height: 100px;
     width: 100px;
@@ -12554,6 +12555,7 @@ html {
     object-fit: cover;
     background: grey;
 }
+
 .com-trick-date {
     float: right;
 }
@@ -12593,4 +12595,18 @@ html {
     font-size: 14px;
     padding: 5px 10px;
     color: #000;
+}
+
+#pictures img {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    background-color: gray;
+}
+
+#videos iframe {
+    height: 200px;
+    width: 400px;
+    object-fit: cover;
+    background-color: gray;
 }

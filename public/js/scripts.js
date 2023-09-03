@@ -6,8 +6,8 @@
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
 
-import '../css/styles.css'
-
-jarallax(document.querySelectorAll('.jarallax'),{
-    speed:0.2,
-})
+// import '../css/styles.css'
+//
+// jarallax(document.querySelectorAll('.jarallax'),{
+//     speed:0.2,
+// })

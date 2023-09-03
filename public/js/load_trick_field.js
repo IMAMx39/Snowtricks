@@ -1,8 +1,10 @@
-function loadImg(img, idInput) {
+function loadImg(img, idInput, index) {
     let buttonAdd = document.querySelector('#add-picture');
-    let image = document.querySelector(img);
     let input = document.getElementById(idInput);
     input.addEventListener("change", () => {
+        createFrame('#trick_form_images_', index, "img", "rounded img-");
+        createButtonSupp('#trick_form_images_', index, "Supp picture", "#add-picture");
+        let image = document.querySelector(img);
         image.src = URL.createObjectURL(input.files[0]);
         buttonAdd.disabled = false;
     });
@@ -45,30 +47,34 @@ function addFieldPicture() {
 
     let divPicture = document.querySelector('#pictures');
     let prototype = divPicture.dataset.prototype;
-    let index = divPicture.querySelectorAll("fieldset").length;
-    prototype = prototype.replace(/name/g, index);
+    let index = divPicture.querySelectorAll("div").length;
+    prototype = prototype.replace(/__name__/g, index);
     divPicture.insertAdjacentHTML("beforeend", prototype);
-    createFrame('#trick_pictures_', index, "img", "rounded img-");
-    createButtonSupp('#trick_pictures_', index, "Supp picture", "#add-picture");
-    loadImg("img.img-" + index + "", "trick_pictures_" + index + "_fileName");
+
+    loadImg("img.img-" + index + "", "trick_form_images_" + index + "_file", index);
 }
 
 function addFieldVideo() {
 
     let divVideo = document.querySelector('#videos');
     let prototype = divVideo.dataset.prototype;
-    let index = divVideo.querySelectorAll("fieldset").length;
-    prototype = prototype.replace(/name/g, index);
+    let index = divVideo.querySelectorAll("div").length;
+
+    prototype = prototype.replace(/__name__/g, index);
     divVideo.insertAdjacentHTML("beforeend", prototype);
-    createFrame('#trick_videos_', index, "iframe", "rounded iframe-");
-    createButtonSupp('#trick_videos_', index, "Supp video", "#add-video");
-    loadIframe("iframe.iframe-" + index + "", "trick_videos_" + index + "_url")
+    createFrame('#trick_form_videos_', index, "iframe", "rounded iframe-");
+    createButtonSupp('#trick_form_videos_', index, "Supp video", "#add-video");
+    loadIframe("iframe.iframe-" + index + "", "trick_form_videos_" + index + "_filename")
+
 }
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
 
     let buttonAddPicture = document.querySelector('#add-picture');
     let buttonAddVideo = document.querySelector('#add-video');
+
     buttonAddPicture.addEventListener("click", function () {
         buttonAddPicture.disabled = true;
         addFieldPicture();
