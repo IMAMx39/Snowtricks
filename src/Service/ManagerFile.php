@@ -8,20 +8,17 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class ManagerFile
+readonly class ManagerFile
 {
-    private SluggerInterface $slugger;
-    private Filesystem $filesystem;
-    private string $tricksDir;
-    private string $avatarDir;
 
 
-    public function __construct(SluggerInterface $slugger, Filesystem $filesystem, string $tricksDir, string $avatarDir)
+    public function __construct(
+        private SluggerInterface $slugger,
+        private Filesystem       $filesystem,
+        private string           $tricksDir,
+        private string           $avatarDir
+    )
     {
-        $this->slugger = $slugger;
-        $this->filesystem = $filesystem;
-        $this->tricksDir = $tricksDir;
-        $this->avatarDir = $avatarDir;
     }
 
     private function ensureDirectoryExists(string $directoryPath): void

@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-class JWTToken
+final class JWTToken
 {
     private const ALGORITHM = 'HS256';
     private const JWT = 'JWT';

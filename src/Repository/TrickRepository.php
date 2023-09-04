@@ -24,14 +24,6 @@ class TrickRepository extends ServiceEntityRepository
         parent::__construct($registry, Trick::class);
     }
 
-    public function getTricks()
-    {
-        return $this->createQueryBuilder('t')
-            ->orderBy('t.createdAt', 'DESC')
-            ->setMaxResults(15)
-            ->getQuery()
-            ->getResult();
-    }
 
     public function getTricksPaginator(int $offset): Paginator
     {
@@ -42,14 +34,6 @@ class TrickRepository extends ServiceEntityRepository
             ->getQuery();
 
         return new Paginator($query);
-    }
-
-    public function existingTrick(string $slug)
-    {
-        return $this->createQueryBuilder('t')
-            ->select('t.' . $slug)
-            ->getQuery()
-            ->getResult();
     }
 
     public function remove(Trick $entity, bool $flush = false): void

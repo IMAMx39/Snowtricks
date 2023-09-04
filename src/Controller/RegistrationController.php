@@ -10,10 +10,12 @@ use App\Security\JWTToken;
 use App\Service\ManagerFile;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,6 +26,10 @@ class RegistrationController extends AbstractController
     {
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     */
     #[Route('/register', name: 'app_register')]
     public function register(
         Request                     $request,

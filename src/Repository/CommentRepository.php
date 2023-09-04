@@ -25,25 +25,6 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function findCommentsByTrick($trick): array
-    {
-        return $this->findBy(["trick" => $trick], ["createdAt" => "DESC"]);
-    }
-
-    public function findComment($trick)
-    {
-        if ($trick instanceof Trick) {
-            $object = 'trick';
-        }
-
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.' . $object . '= :val')
-            ->setParameter('val', $trick->getId())
-            ->orderBy('c.createdAt', 'DESC')
-            ->getQuery()->getResult();
-
-    }
-
     public function getCommentPaginator(Trick $trick, int $offset): Paginator
     {
         $query = $this->createQueryBuilder('c')
