@@ -93,10 +93,13 @@ class TrickController extends AbstractController
             return $this->redirectToRoute('app_trick', ['slug' => $trick->getSlug()]);
         }
         $imagesUri = $this->getParameter('tricks_images_uri');
+        $avatar = $this->getParameter('avatars_uri');
+
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
             'comments' => $paginator,
             'imagesUrl' => $imagesUri,
+            'avatar' => $avatar,
             'offset' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE),
             'form' => $form->createView()
         ]);
@@ -107,11 +110,14 @@ class TrickController extends AbstractController
     {
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $this->commentRepository->getCommentPaginator($trick, $offset);
+        $avatar = $this->getParameter('avatars_uri');
+
 
         return $this->render('trick/_comments.html.twig', [
             'comments' => $paginator,
             'offset' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE),
-            'trick' => $trick
+            'trick' => $trick,
+            'avatar' => $avatar,
         ]);
     }
 

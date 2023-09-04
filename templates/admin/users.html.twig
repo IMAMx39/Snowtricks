@@ -17,6 +17,11 @@
                         <img src="{{ user.avatar is empty ? avatar ~ "default.png" : avatar ~ user.avatar }}"
                              class="img-users rounded-circle" alt="Avatar de l'utilisateur">
                         <span class="fw-bold">{{ user.username }}</span>
+                        <span class="fw-lighter">{{ user.comments|length }} Commantaire</span>
+                        <div>
+                            <a href="" class="btn btn-outline-warning mt-2">Bloquer</a>
+                            <a href="" class="btn btn-outline-danger mt-2">Supprimer</a>
+                        </div>
                     </div>
                     {# User comments, within collapsed div #}
                     {% if user.comments|length > 0 %}
