@@ -12599,7 +12599,7 @@ html {
 
 #pictures img {
     height: 150px;
-    width: 150px;
+    width: 250px;
     object-fit: cover;
     background-color: gray;
 }
