@@ -22,94 +22,24 @@
                         <div class="form-row description">{{ form_row(formTrick.description) }}</div>
                         <div class="form-row small">{{ form_row(formTrick.category, {'label' : 'Catégorie'}) }}</div>
                         <hr>
-                        <!-- images -->
-                        <div class="mb-3">
-                            <a class="add_item_link btn btn-info" data-collection-holder-class="images">Ajouter une
-                                image</a>
-                            <div class="images" data-index="0"
-                                 data-prototype="{{ form_widget(formTrick.images.vars.prototype)|e('html_attr') }}">
-
-                                {% for image in formTrick.images %}
-                                    <div>{{ form_row(image.filename) }}</div>
-                                {% endfor %}
-                            </div>
+                        <div id="pictures"
+                             data-prototype="{{ form_row(formTrick.images.vars.prototype)|e('html_attr') }}">
                         </div>
+                        <button type="button" id="add-picture" class="btn btn-outline-info">Ajouter une image</button>
                         <hr>
-                        <div class="mb-3">
-                            <a class="add_item_link btn btn-info" data-collection-holder-class="videos">Ajouter une
-                                vidéo</a>
-                            <div class="videos" data-index="0"
-                                 data-prototype="{{ form_widget(formTrick.videos.vars.prototype)|e('html_attr') }}">
-
-                                {% for vid in formTrick.videos %}
-                                    <div>{{ form_row(vid.filename) }}</div>
-                                {% endfor %}
-                            </div>
+                        <div id="videos"
+                             data-prototype="{{ form_row(formTrick.videos.vars.prototype)|e('html_attr') }}">
                         </div>
+                        <button type="button" id="add-video" class="btn btn-outline-info">Ajouter une video</button>
+                        {{ form_row(formTrick.videos) }}
                         <hr>
                         <div class="mb-3" id="submit-btn">{{ form_row(formTrick.submit) }}</div>
-
                         {{ form_end(formTrick) }}
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!--- Manage collections -->
-    <script>
-        window.addEventListener('load', function () {
-            const addTagFormDeleteLink = (item) => {
-                //Bouton dans update / new (sélection avant envoi en db)
-                const removeFormButton = document.createElement('button');
-                removeFormButton.innerHTML = `
-
-               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                    </svg>
-
-                `;
-
-                item.append(removeFormButton);
-
-                removeFormButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // remove the li for the ITEM form
-                    item.remove();
-                });
-            }
-
-            // prend le prototype, remplace __name__ et insère dans le html
-            const addFormToCollection = (e) => {
-                const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
-
-                const item = document.createElement('li');
-
-                item.innerHTML = collectionHolder
-                    .dataset
-                    .prototype
-                    .replace(
-                        /__name__/g,
-                        collectionHolder.dataset.index
-                    );
-
-                collectionHolder.appendChild(item);
-
-                collectionHolder.dataset.index++;
-                // add a delete link to the new form
-                addTagFormDeleteLink(item);
-            };
-
-            // détecte le click sur le bouton ayant la classe add_item_link & execute la fonction addFormToCollection
-            document
-                .querySelectorAll('.add_item_link')
-                .forEach(btn => {
-                    btn.addEventListener("click", addFormToCollection)
-                });
-
-        })
-    </script>
 {% endblock %}
 
 
