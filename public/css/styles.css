@@ -12555,6 +12555,13 @@ html {
     object-fit: cover;
     background: grey;
 }
+.img-users-comments {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #5efffb;
+}
 
 .com-trick-date {
     float: right;

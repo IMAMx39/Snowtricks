@@ -2,8 +2,8 @@
     <div class="card-body">
         <!-- Single comment-->
         <div class="d-flex mt-4">
-            <div class="flex-shrink-0"><img class="rounded-circle"
-                                            src="{{ asset('assets/img/profile.png') }}"
+            <div class="flex-shrink-0"><img class="rounded-circle img-users-comments"
+                                            src="{{ comment.author.avatar is empty ? avatar ~ "default.png" : avatar ~ comment.author.avatar }}"
                                             alt="..."/>
             </div>
             <div class="ms-3">
@@ -13,16 +13,14 @@
         </div>
     </div>
 {% endfor %}
-<a id="load-more">
-    <div colspan="3">
-        <button class="btn btn-primary btn-block mb-3 text-center"
-                hx-get="{{ path('app_trick_comment', { slug: trick.slug, offset: offset  }) }}"
-                hx-swap="outerHTML"
-        >
-            Voir plus ...
-        </button>
-    </div>
-</a>
+<div class="justify-content-center">
+    <button class="btn btn-outline-primary btn-block mb-3 text-center justify-content-center d-flex"
+            hx-get="{{ path('app_trick_comment', { slug: trick.slug, offset: offset  }) }}"
+            hx-swap="outerHTML"
+    >
+        Voir plus de commentaires
+    </button>
+</div>
 
 
 
