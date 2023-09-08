@@ -12548,6 +12548,13 @@ html {
     background: grey;
 }
 
+.img-profile-base {
+    height: 25px;
+    width: 25px;
+    object-fit: cover;
+    background: grey;
+}
+
 .img-users {
     height: 100px;
     width: 100px;
@@ -12616,4 +12623,13 @@ html {
     width: 400px;
     object-fit: cover;
     background-color: gray;
+}
+
+.logo {
+    height: 30px;
+    width: 30px;
+}
+
+.icon-edit {
+    height: 20px;
 }
