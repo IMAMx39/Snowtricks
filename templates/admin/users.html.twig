@@ -10,12 +10,18 @@
                 <div class="user-card mb-3 p-3">
                     <div class="user">
                         {% if user.isVerified == true %}
-                            <div class="badge bg-success bg-gradient rounded-pill mb-2"><i class="bi bi-check-circle-fill"></i> Compte vérifier</div>
-                        {% else%}
-                            <div class="badge bg-warning bg-gradient rounded-pill mb-2"><i class="bi bi-exclamation-triangle"></i> Compte non vérifier</div>
+                            <div class="badge bg-success bg-gradient rounded-pill mb-2"><i
+                                        class="bi bi-check-circle-fill"></i> Compte vérifier
+                            </div>
+                        {% else %}
+                            <div class="badge bg-warning bg-gradient rounded-pill mb-2"><i
+                                        class="bi bi-exclamation-triangle"></i> Compte non vérifier
+                            </div>
                         {% endif %}
                         {% if user.isBlocked == true %}
-                            <div class="badge bg-danger bg-gradient rounded-pill mb-2"><i class="bi bi-x-octagon"></i> Compte bloqué</div>
+                            <div class="badge bg-danger bg-gradient rounded-pill mb-2"><i class="bi bi-x-octagon"></i>
+                                Compte bloqué
+                            </div>
                         {% endif %}
                         <img src="{{ user.avatar is empty ? avatar ~ "default.png" : avatar ~ user.avatar }}"
                              class="img-users rounded-circle" alt="Avatar de l'utilisateur">
@@ -23,11 +29,12 @@
                         <span class="fw-lighter">{{ user.comments|length }} Commantaire</span>
                         <div>
                             {% if user.isBlocked == false %}
-                            <a href="{{ path('app_block_user',{'id': user.id}) }}"
-                               onclick="return confirm('Vous voulez vraiment blocker ce utilisateur ?');"
-                               class="btn btn-outline-warning mt-2">Bloquer</a>
+                                <a href="{{ path('app_block_user',{'id': user.id}) }}"
+                                   onclick="return confirm('Vous voulez vraiment blocker ce utilisateur ?');"
+                                   class="btn btn-outline-warning mt-2">Bloquer</a>
                             {% else %}
-                                <a href="{{ path('app_unblock_user',{'id': user.id}) }}" class="btn btn-outline-success mt-2">Debloquer</a>
+                                <a href="{{ path('app_unblock_user',{'id': user.id}) }}"
+                                   class="btn btn-outline-success mt-2">Debloquer</a>
                             {% endif %}
                         </div>
                     </div>
@@ -49,15 +56,19 @@
                                              src="{{ comment.trick.images is empty  ? imagesUrl ~ "default.png" : imagesUrl ~ comment.trick.slug ~ "/" ~ comment.trick.images|first.fileName }}"
                                         />
                                         <div class="card-body p-4">
-                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Groupe: {{ comment.trick.category.name }}</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="#!"><h5 class="card-title mb-3">Posté sur : {{ comment.trick.name }}</h5></a>
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">
+                                                Groupe: {{ comment.trick.category.name }}</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="#!"><h5
+                                                        class="card-title mb-3">Posté sur
+                                                    : {{ comment.trick.name }}</h5></a>
                                             <p class="card-text mb-0">{{ comment.content }}</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                             <div class="d-flex align-items-end justify-content-between">
                                                 <div class="d-flex align-items-center">
                                                     <div class="small">
-                                                        <div class="text-muted">le : {{ comment.createdAt|date("d/m/Y") }}</div>
+                                                        <div class="text-muted">le
+                                                            : {{ comment.createdAt|date("d/m/Y") }}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,7 +80,6 @@
                     {% else %}
                         <div class="comments  mt-2 col">
                             <button type="button" class="btn btn-secondary w-100" disabled>Aucun commentaire</button>
-
                         </div>
                     {% endif %}
                 </div>
