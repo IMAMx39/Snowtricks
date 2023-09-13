@@ -10,17 +10,25 @@
                 <div class="user-card mb-3 p-3">
                     <div class="user">
                         {% if user.isVerified == true %}
-                            <div class="badge bg-success bg-gradient rounded-pill mb-2"><i class="bi bi-check-circle-fill"></i> Compte Activer</div>
-                        {% else %}
-                            <div class="badge bg-warning bg-gradient rounded-pill mb-2"><i class="bi bi-exclamation-triangle"></i> Compte non activer</div>
+                            <div class="badge bg-success bg-gradient rounded-pill mb-2"><i class="bi bi-check-circle-fill"></i> Compte vérifier</div>
+                        {% else%}
+                            <div class="badge bg-warning bg-gradient rounded-pill mb-2"><i class="bi bi-exclamation-triangle"></i> Compte non vérifier</div>
+                        {% endif %}
+                        {% if user.isBlocked == true %}
+                            <div class="badge bg-danger bg-gradient rounded-pill mb-2"><i class="bi bi-x-octagon"></i> Compte bloqué</div>
                         {% endif %}
                         <img src="{{ user.avatar is empty ? avatar ~ "default.png" : avatar ~ user.avatar }}"
                              class="img-users rounded-circle" alt="Avatar de l'utilisateur">
                         <span class="fw-bold">{{ user.username }}</span>
                         <span class="fw-lighter">{{ user.comments|length }} Commantaire</span>
                         <div>
-                            <a href="" class="btn btn-outline-warning mt-2">Bloquer</a>
-                            <a href="" class="btn btn-outline-danger mt-2">Supprimer</a>
+                            {% if user.isBlocked == false %}
+                            <a href="{{ path('app_block_user',{'id': user.id}) }}"
+                               onclick="return confirm('Vous voulez vraiment blocker ce utilisateur ?');"
+                               class="btn btn-outline-warning mt-2">Bloquer</a>
+                            {% else %}
+                                <a href="{{ path('app_unblock_user',{'id': user.id}) }}" class="btn btn-outline-success mt-2">Debloquer</a>
+                            {% endif %}
                         </div>
                     </div>
                     {# User comments, within collapsed div #}

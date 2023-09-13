@@ -2,7 +2,9 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,7 +13,7 @@ class AdminController extends AbstractController
 {
 
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository $userRepository,private readonly EntityManagerInterface $entityManager
     )
     {
     }
@@ -28,5 +30,23 @@ class AdminController extends AbstractController
             'avatar' => $avatar,
             'imagesUrl' => $imagesUrl,
         ]);
+    }
+
+    #[Route('/admin/user/{id}/block', name: 'app_block_user')]
+    public function blockUser(User $user): Response
+    {
+        $user->setBlocked(true);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('app_admin');
+    }
+
+    #[Route('/admin/user/{id}/unblock', name: 'app_unblock_user')]
+    public function unblockUser(User $user): Response
+    {
+        $user->setBlocked(false);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('app_admin');
     }
 }

@@ -22,30 +22,22 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
-    private Filesystem $filesystem;
-    private SluggerInterface $slugger;
-    private UserPasswordHasherInterface $hasher;
-    private string $tricksImagesDir;
     private string $fixturesPicsDir;
 
     public function __construct(
-        Filesystem $filesystem,
-        SluggerInterface $slugger,
-        UserPasswordHasherInterface $hasher,
-        string $tricksImagesDir
+        private readonly Filesystem $filesystem,
+        private readonly SluggerInterface $slugger,
+        private readonly UserPasswordHasherInterface $hasher,
+        private readonly string $tricksImagesDir
     )
     {
-        $this->filesystem = $filesystem;
-        $this->slugger = $slugger;
-        $this->hasher = $hasher;
-        $this->tricksImagesDir = $tricksImagesDir;
         $this->fixturesPicsDir = dirname(__FILE__) . '/Data/Images/';
     }
 
     /**
      * @throws Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
         $this->purgeDirectories();
@@ -170,19 +162,22 @@ class AppFixtures extends Fixture
         // Users
         $users = [];
         $johndoe = new User();
-        $johndoe->setUsername("James smith")
+        $johndoe->setUsername("James.smith")
             ->setEmail("james.smith@gmail.com")
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
-            ->setIsVerified(true);
+            ->setIsVerified(true)
+            ->setBlocked(false);
         $users[] = $johndoe;
 
         $janedoe = new User();
-        $janedoe->setUsername("crestophe durand")
+        $janedoe->setUsername("crestophe.durand")
             ->setEmail("crestophe.durand@gmail.com")
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
-            ->setIsVerified(true);
+            ->setIsVerified(true)
+            ->setBlocked(false);
+
         $users[] = $janedoe;
 
         // Comments from users on tricks
@@ -195,6 +190,7 @@ class AppFixtures extends Fixture
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
             ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
             ->setIsVerified(true)
+            ->setBlocked(false)
             ->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
         $users[] = $admin;
 

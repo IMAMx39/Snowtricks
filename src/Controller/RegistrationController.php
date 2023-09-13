@@ -52,6 +52,8 @@ class RegistrationController extends AbstractController
             }
             $user->setCreatedAt(new DateTimeImmutable);
             $user->setIsVerified(false);
+            $user->setBlocked(false);
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
