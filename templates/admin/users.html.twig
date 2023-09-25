@@ -7,6 +7,7 @@
         <h1 class="text-center mt-5 mb-5">Utilisateurs de SnowTricks : </h1>
         <div class="d-flex w-100 justify-content-center flex-column align-items-center">
             {% for user in users|filter(user => 'ROLE_ADMIN' not in user.roles) %}
+                {% set comments = user_comments(user) %}
                 <div class="user-card mb-3 p-3">
                     <div class="user">
                         {% if user.isVerified == true %}
@@ -26,7 +27,7 @@
                         <img src="{{ user.avatar is empty ? avatar ~ "default.png" : avatar ~ user.avatar }}"
                              class="img-users rounded-circle" alt="Avatar de l'utilisateur">
                         <span class="fw-bold">{{ user.username }}</span>
-                        <span class="fw-lighter">{{ user.comments|length }} Commantaire</span>
+                        <span class="fw-lighter">{{ comments|length }} Commantaire</span>
                         <div>
                             {% if user.isBlocked == false %}
                                 <a href="{{ path('app_block_user',{'id': user.id}) }}"
@@ -39,7 +40,7 @@
                         </div>
                     </div>
                     {# User comments, within collapsed div #}
-                    {% if user.comments|length > 0 %}
+                    {% if comments|length > 0 %}
                         <div class="comments-button mt-2">
                             <button class="btn btn-primary w-100" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#collapseComments{{ loop.index }}"
@@ -48,7 +49,7 @@
                             </button>
                         </div>
                         <div class="comments collapse mt-2" id="collapseComments{{ loop.index }}">
-                            {% for comment in user.comments %}
+                            {% for comment in comments %}
                                 <div class="mb-5">
                                     <div class="card h-50 shadow border-0">
                                         <img class="card-img-bottom card-tricks"

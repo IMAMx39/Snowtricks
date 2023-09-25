@@ -81,14 +81,11 @@ readonly class ManagerFile
      */
     public function uploadAvatar(UploadedFile $file, string $oldAvatarName = null): string
     {
-        $targetDir = $this->avatarDir;
-        $this->ensureDirectoryExists($targetDir);
-
         if ($oldAvatarName !== null) {
             $this->deleteAvatar($oldAvatarName);
         }
 
-        return $this->upload($file, $targetDir);
+        return $this->upload($file);
     }
 
     public function deleteAvatar(string $fileName): void
@@ -107,13 +104,15 @@ readonly class ManagerFile
     /**
      * @throws Exception
      */
-    private function upload(UploadedFile $file, string $targetDir): string
+    private function upload(UploadedFile $file): string
     {
+        $this->ensureDirectoryExists($this->avatarDir);
+
         $originalFilename = $file->getClientOriginalName();
         $fileName = $this->generateUniqueFilename($originalFilename);
 
         try {
-            $file->move($targetDir, $fileName);
+            $file->move($this->avatarDir, $fileName);
         } catch (FileException $e) {
             throw new Exception("Exception thrown while moving the file: " . $e->getMessage());
         }
