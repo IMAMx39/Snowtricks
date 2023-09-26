@@ -44,7 +44,8 @@
                                             </a>
                                             <a class="btn btn-danger"
                                                href="{{ path('app_trick_delete_image', {'slug': trick.slug, 'id': image.vars.value.id }) }}"
-                                               onclick="return confirm('Vous voulez vraiment supprimer cette image ?');">
+                                               onclick="return confirm('Vous voulez vraiment supprimer cette image ?');"
+                                            >
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
@@ -72,7 +73,11 @@
                                                aria-expanded="false">
                                                 <i class="bi bi-pen"></i>
                                             </a>
-                                            <a class="btn btn-danger" href=""><i class="bi bi-trash"></i>
+                                            <a class="btn btn-danger"
+                                               href="{{ path('app_trick_delete_video', {'slug': trick.slug, 'id': video.vars.value.id }) }}"
+                                               onclick="return confirm('Vous voulez vraiment supprimer cette video ?');"
+                                            >
+                                                <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
                                     </div>

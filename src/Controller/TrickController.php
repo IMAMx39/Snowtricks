@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
@@ -180,6 +181,21 @@ class TrickController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
+
+    #[Route('/trick/{slug}/edit/video/{id}/delete', name: 'app_trick_delete_video')]
+    public function deleteVideo(string $slug, int $id): Response
+    {
+        $trick = $this->trickRepository->findOneOr404(['slug' => $slug]);
+        $image = $this->entityManager->getRepository(Video::class);
+        $image = $image->find($id);
+        $trick->removeVideo($image);
+
+        $this->entityManager->persist($trick);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_home');
+    }
+
 
 
     /**
