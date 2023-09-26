@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\Service\ManagerFile;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -125,6 +127,7 @@ class TrickController extends AbstractController
     public function edit(Request $request, Trick $trick): Response
     {
         $picturesUri = $this->getParameter('tricks_images_uri');
+        $avatar = $this->getParameter('avatars_uri');
         $editTrickForm = $this->createForm(TrickFormType::class, $trick);
         $trickTitle = $trick->getName();
         $editTrickForm->handleRequest($request);
@@ -146,8 +149,9 @@ class TrickController extends AbstractController
 
         return $this->render('trick/edit.html.twig', [
             'trick' => $trick,
-            'picturesUri' => $picturesUri,
-            'formTrick' => $editTrickForm->createView(),
+            'imagesUrl' => $picturesUri,
+            'avatar' => $avatar,
+            'form' => $editTrickForm->createView(),
         ]);
 
     }
@@ -158,6 +162,21 @@ class TrickController extends AbstractController
         $this->trickRepository->remove($trick, true);
         $this->fileManager->removeTrickPicsDir($trick->getSlug());
         $this->addFlash('success', 'Le trick "' . $trick->getName() . '" a bien été supprimé');
+
+        return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/trick/{slug}/edit/image/{id}/delete', name: 'app_trick_delete_image')]
+    public function deleteImage(string $slug, int $id): Response
+    {
+        $trick = $this->trickRepository->findOneOr404(['slug' => $slug]);
+        $image = $this->entityManager->getRepository(Image::class);
+        $image = $image->find($id);
+        //$this->fileManager->deleteTrickImage($slug, $image->getFilename());
+        $trick->removeImage($image);
+
+        $this->entityManager->persist($trick);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('app_home');
     }

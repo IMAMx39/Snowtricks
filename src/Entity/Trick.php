@@ -168,12 +168,7 @@ class Trick
 
     public function removeImage(Image $image): static
     {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getTrick() === $this) {
-                $image->setTrick(null);
-            }
-        }
+        $this->images->removeElement($image);
 
         return $this;
     }

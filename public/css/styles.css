@@ -12562,6 +12562,7 @@ html {
     object-fit: cover;
     background: grey;
 }
+
 .img-users-comments {
     height: 50px;
     width: 50px;
@@ -12632,4 +12633,27 @@ html {
 
 .icon-edit {
     height: 20px;
+}
+
+.trick-card img {
+    object-fit: cover;
+    max-width: 18rem;
+    height: 20rem;
+}
+
+.trick-card iframe {
+    object-fit: cover;
+    max-width: 18rem;
+    height: 20rem;
+}
+
+.edit-btn {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+
+.show-btn {
+    display: flex;
+    justify-content: center;
 }
