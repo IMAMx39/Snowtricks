@@ -7,7 +7,9 @@ use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Video;
 use App\Form\CommentType;
+use App\Form\ImageFormType;
 use App\Form\TrickFormType;
+use App\Form\VideoFormType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\Service\ManagerFile;
@@ -170,7 +172,7 @@ class TrickController extends AbstractController
     #[Route('/trick/{slug}/edit/image/{id}/delete', name: 'app_trick_delete_image')]
     public function deleteImage(string $slug, int $id): Response
     {
-        $trick = $this->trickRepository->findOneOr404(['slug' => $slug]);
+        $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
         $image = $this->entityManager->getRepository(Image::class);
         $image = $image->find($id);
         //$this->fileManager->deleteTrickImage($slug, $image->getFilename());
@@ -179,13 +181,13 @@ class TrickController extends AbstractController
         $this->entityManager->persist($trick);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
     }
 
     #[Route('/trick/{slug}/edit/video/{id}/delete', name: 'app_trick_delete_video')]
     public function deleteVideo(string $slug, int $id): Response
     {
-        $trick = $this->trickRepository->findOneOr404(['slug' => $slug]);
+        $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
         $image = $this->entityManager->getRepository(Video::class);
         $image = $image->find($id);
         $trick->removeVideo($image);
@@ -193,7 +195,47 @@ class TrickController extends AbstractController
         $this->entityManager->persist($trick);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
+    }
+
+    #[Route('/trick/{slug}/edit/video/add', name: 'app_trick_add_video')]
+    public function addVideo(Request $request, string $slug) :Response
+    {
+        $trick = $this->trickRepository->findOneOr404(['slug' => $slug]);
+        $video = new Video();
+        $form = $this->createForm(VideoFormType::class, $video);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $trick->addVideo($video);
+            $this->entityManager->persist($trick);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
+    }
+
+    #[Route('/trick/{slug}/edit/image/add', name: 'app_trick_add_image')]
+    public function addImage(Request $request, string $slug) :Response
+    {
+        $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
+        $image = new Image();
+        $form = $this->createForm(ImageFormType::class, $image);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $fileName = $this->fileManager->uploadTrickImage($image->getFile(), $slug);
+            $image->setFileName($fileName);
+            $trick->addImage($image);
+            $this->entityManager->persist($trick);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
     }
 
 
