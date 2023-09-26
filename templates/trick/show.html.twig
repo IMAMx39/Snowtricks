@@ -27,7 +27,7 @@
                                  alt="image de trick {{ trick.name|raw }}"/>
                         </figure>
 
-                        <div class="d-flex overflow-scroll mb-5">
+                        <div class="d-flex overflow-auto mb-5">
                             {% for pic in trick.images %}
                                 <div class="col-lg-3 ">
                                     <figure class="mb-4 me-3 d-flex">
@@ -43,7 +43,7 @@
                         </div>
                         {% if app.user %}
                             <div class="show-btn">
-                                <a class="btn  btn-block mb-3 text-center"
+                                <a class="btn btn-block mb-3 text-center"
                                    href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
                                     <i class="bi bi-pencil fs-3"></i>
                                 </a>
