@@ -52,6 +52,8 @@ class RegistrationController extends AbstractController
             }
             $user->setCreatedAt(new DateTimeImmutable);
             $user->setIsVerified(false);
+            $user->setBlocked(false);
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -61,7 +63,7 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            $expireHours = 4;
+            $expireHours = 24;
             $token = $this->tokenJWT->generateToken(['user_email' => $user->getEmail()], $secret, $expireHours);
 
             $this->emailVerifier->sendEmailConfirmationByToken($user, $token, $expireHours);

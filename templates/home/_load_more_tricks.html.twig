@@ -20,20 +20,23 @@
                                 <div class="text-muted">Publiée le: {{ trick.createdAt|date('d/m/Y H:i') }}</div>
                             </div>
                             {% if app.user %}
-                            <div class="z-index-100">
-                                <a class="btn  btn-block mb-3 text-center"
-                                   href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
-                                    <i class="bi bi-pencil fs-3"></i>
-                                </a>
-                            </div>
-                            <div class="z-index-100">
-                                <a class="btn btn-outline-danger btn-block mb-3 text-center"
-                                   href="{{ path('app_trick_delete', {'slug': trick.slug}) }}"
-                                   onclick="return confirm('Vous voulez vraiment supprimer ce trick ?');"
-                                >
-                                    <i class="bi colored bi-trash-fill fs-3"></i>
-                                </a>
-                            </div>
+                                <div class="d-flex flex-nowrap z-index-100">
+                                    <div class="z-index-100">
+                                        <a class="mb-3 text-center"
+                                           href="{{ path('app_trick_edit', {'slug': trick.slug}) }}"
+                                        >
+                                            <img class="icon-edit" src="{{ asset('medias/icons/pencil.png') }}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="z-index-100">
+                                        <a class=" mb-3 text-center"
+                                           href="{{ path('app_trick_delete', {'slug': trick.slug}) }}"
+                                           onclick="return confirm('Vous voulez vraiment supprimer ce trick ?');"
+                                        >
+                                            <img class="icon-edit" src="{{ asset('medias/icons/trash.png') }}" alt="">
+                                        </a>
+                                    </div>
+                                </div>
                             {% endif %}
                         </div>
                     </div>
@@ -46,7 +49,7 @@
         <a id="load-more">
             <div  >
                 <button class="btn btn-outline-primary btn-block mb-3 text-center"
-                        hx-get="{{ path('app_loadmore_ticks', { offset: offset  }) }}"
+                        hx-get="{{ path('app_load_more_ticks', { offset: offset  }) }}"
                         hx-swap="outerHTML"
                 >
                     Vour voir plus de tricks

@@ -64,13 +64,13 @@ readonly class ManagerFile
         $this->ensureDirectoryExists($targetDir);
 
         if ($oldPicName !== null) {
-            $this->deleteTrickPicture($dirName, $oldPicName);
+            $this->deleteTrickImage($dirName, $oldPicName);
         }
 
         return $this->upload($file, $targetDir);
     }
 
-    public function deleteTrickPicture(string $trickSlug, string $fileName): void
+    public function deleteTrickImage(string $trickSlug, string $fileName): void
     {
         $targetPicture = $this->tricksDir . $trickSlug . '/' . $fileName;
         $this->removeFileIfExists($targetPicture);
@@ -120,5 +120,6 @@ readonly class ManagerFile
 
         return $fileName;
     }
+
 }
 

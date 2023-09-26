@@ -12548,6 +12548,13 @@ html {
     background: grey;
 }
 
+.img-profile-base {
+    height: 25px;
+    width: 25px;
+    object-fit: cover;
+    background: grey;
+}
+
 .img-users {
     height: 100px;
     width: 100px;
@@ -12555,6 +12562,7 @@ html {
     object-fit: cover;
     background: grey;
 }
+
 .img-users-comments {
     height: 50px;
     width: 50px;
@@ -12616,4 +12624,36 @@ html {
     width: 400px;
     object-fit: cover;
     background-color: gray;
+}
+
+.logo {
+    height: 30px;
+    width: 30px;
+}
+
+.icon-edit {
+    height: 20px;
+}
+
+.trick-card img {
+    object-fit: cover;
+    max-width: 18rem;
+    height: 20rem;
+}
+
+.trick-card iframe {
+    object-fit: cover;
+    max-width: 18rem;
+    height: 20rem;
+}
+
+.edit-btn {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+
+.show-btn {
+    display: flex;
+    justify-content: center;
 }

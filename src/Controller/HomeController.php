@@ -27,14 +27,14 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/tricks/loadmore', name: 'app_loadmore_ticks', methods: ['GET'])]
-    public function loadmore(Request $request): Response
+    #[Route('/tricks/load_more', name: 'app_load_more_ticks', methods: ['GET'])]
+    public function loadMore(Request $request): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));
         $tricks = $this->trickRepository->getTricksPaginator($offset);
         $imagesUrl = $this->getParameter('tricks_images_uri');
 
-        return $this->render('home/_loadmoreTricks.html.twig', [
+        return $this->render('home/_load_more_tricks.html.twig', [
             'tricks' => $tricks,
             'offset' => min(count($tricks), $offset + TrickRepository::PAGINATOR_PER_PAGE),
             'imagesUrl' => $imagesUrl
