@@ -64,7 +64,9 @@
                                         <iframe src="{{ video.vars.value.filename }}"
                                                 class="card-img-top"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                allowfullscreen></iframe>
+                                                allowfullscreen>
+
+                                        </iframe>
                                     </div>
                                     <div class="edit-btn">
                                         <div class="d-flex justify-content-between">
@@ -96,9 +98,8 @@
                         <div class="form-row description">{{ form_row(form.description) }}</div>
                         <div class="form-row small">{{ form_row(form.category, {'label' : 'Catégorie'}) }}</div>
                         <div class="mb-3" id="submit-btn">{{ form_row(form.submit) }}</div>
-
+                        <hr>
                     </article>
-
                 </div>
             </div>
         </div>
