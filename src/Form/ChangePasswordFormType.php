@@ -39,7 +39,7 @@ class ChangePasswordFormType extends AbstractType
                 'required' => true,
                 'second_options' => [
                     'label' => 'Répéter le mot de passe',
-                     'attr' =>
+                    'attr' =>
                         [
                             'class' => 'form-control mb-3'
                         ]

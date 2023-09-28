@@ -13,7 +13,7 @@ class AdminController extends AbstractController
 {
 
     public function __construct(
-        private readonly UserRepository $userRepository,private readonly EntityManagerInterface $entityManager
+        private readonly UserRepository $userRepository, private readonly EntityManagerInterface $entityManager
     )
     {
     }

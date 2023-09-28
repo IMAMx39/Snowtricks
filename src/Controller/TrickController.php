@@ -13,7 +13,6 @@ use App\Form\VideoFormType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\Service\ManagerFile;
-use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -199,15 +198,14 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/{slug}/edit/video/add', name: 'app_trick_add_video')]
-    public function addVideo(Request $request, string $slug) :Response
+    public function addVideo(Request $request, string $slug): Response
     {
         $trick = $this->trickRepository->findOneOr404(['slug' => $slug]);
         $video = new Video();
         $form = $this->createForm(VideoFormType::class, $video);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $trick->addVideo($video);
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
@@ -218,15 +216,14 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/{slug}/edit/image/add', name: 'app_trick_add_image')]
-    public function addImage(Request $request, string $slug) :Response
+    public function addImage(Request $request, string $slug): Response
     {
         $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
         $image = new Image();
         $form = $this->createForm(ImageFormType::class, $image);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $fileName = $this->fileManager->uploadTrickImage($image->getFile(), $slug);
             $image->setFileName($fileName);
             $trick->addImage($image);
@@ -237,7 +234,6 @@ class TrickController extends AbstractController
         }
         return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
     }
-
 
 
     /**

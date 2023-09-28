@@ -15,17 +15,16 @@ class ResetPasswordFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('username', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'placeholder' => "Identifiant de l'utilisateur",
-                'class' => 'form-control mb-3'
-            ]
-        ])
+            ->add('username', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => "Identifiant de l'utilisateur",
+                    'class' => 'form-control mb-3'
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success form-control'],
-                'label' => "Demander un nouveau mot de passe"])
-            ;
+                'label' => "Demander un nouveau mot de passe"]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
