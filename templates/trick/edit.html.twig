@@ -37,12 +37,12 @@
                                         </div>
                                         <div class="card-body edit-btn">
                                             <div class="d-flex justify-content-end">
-                                                <a class="btn btn-primary me-2" data-bs-toggle="collapse"
+                                                <a class="btn btn-outline-warning me-2" data-bs-toggle="collapse"
                                                    data-bs-target="#collapsePicture{{ loop.index }}"
                                                    aria-expanded="false">
                                                     <i class="bi bi-pen"></i>
                                                 </a>
-                                                <a class="btn btn-danger"
+                                                <a class="btn btn-outline-danger"
                                                    href="{{ path('app_trick_delete_image', {'slug': trick.slug, 'id': image.vars.value.id }) }}"
                                                    onclick="return confirm('Vous voulez vraiment supprimer cette image ?');"
                                                 >
@@ -72,12 +72,12 @@
                                         </div>
                                         <div class="edit-btn">
                                             <div class="d-flex justify-content-between">
-                                                <a class="btn btn-primary me-2" data-bs-toggle="collapse"
+                                                <a class="btn btn-outline-warning me-2" data-bs-toggle="collapse"
                                                    data-bs-target="#collapseVideo{{ loop.index }}"
                                                    aria-expanded="false">
                                                     <i class="bi bi-pen"></i>
                                                 </a>
-                                                <a class="btn btn-danger"
+                                                <a class="btn btn-outline-danger"
                                                    href="{{ path('app_trick_delete_video', {'slug': trick.slug, 'id': video.vars.value.id }) }}"
                                                    onclick="return confirm('Vous voulez vraiment supprimer cette video ?');"
                                                 >
@@ -102,14 +102,14 @@
                                 <div id="images"
                                      data-prototype="{{ form_row(form.images.vars.prototype)|e('html_attr') }}">
                                 </div>
-                                <button type="button" id="add-image" class="btn btn-outline-info">Ajouter une image</button>
+                                <button type="button" id="add-image" class="btn btn-info">Ajouter une image</button>
                             </div>
                             <hr>
                             <div>
                                 <div id="videos-edit"
                                      data-prototype="{{ form_row(form.videos.vars.prototype)|e('html_attr') }}">
                                 </div>
-                                <button type="button" id="add-videos-edit" class="btn btn-outline-info">Ajouter une video</button>
+                                <button type="button" id="add-videos-edit" class="btn btn-info">Ajouter une video</button>
                             </div>
                         </div>
                         <hr>
@@ -119,7 +119,7 @@
                         <div class="mb-3" id="submit-btn">{{ form_row(form.submit) }}</div>
 
                         {{ form_end(form) }}
-                        <hr>
+
                     </article>
                 </div>
             </div>

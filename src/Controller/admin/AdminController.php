@@ -38,7 +38,7 @@ class AdminController extends AbstractController
         $user->setBlocked(true);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->addFlash('success', "L'utilisateur à été bien bloqué");
+        $this->addFlash('info', "L'utilisateur à été bien bloqué");
         return $this->redirectToRoute('app_admin');
     }
 
@@ -48,7 +48,7 @@ class AdminController extends AbstractController
         $user->setBlocked(false);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->addFlash('success', "L'utilisateur à été bien débloqué");
+        $this->addFlash('info', "L'utilisateur à été bien débloqué");
         return $this->redirectToRoute('app_admin');
     }
 }

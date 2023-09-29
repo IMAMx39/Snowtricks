@@ -17,9 +17,9 @@ class LoginController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        if ($error){
-            $this->addFlash('error', 'un problème est survenu lors de la connexion');
-        }
+        //if ($error){
+        //    $this->addFlash('error', 'un problème est survenu lors de la connexion');
+        //}
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,

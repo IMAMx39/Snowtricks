@@ -12677,3 +12677,9 @@ html {
     align-content: center;
     flex-wrap: nowrap;
 }
+
+.b-r {
+    border-right: thin black solid;
+    height: 100vh;
+    overflow: auto;
+}
