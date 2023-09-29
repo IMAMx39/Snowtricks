@@ -1,17 +1,17 @@
 function loadImage(img, idInput, index) {
-    let buttonAdd = document.querySelector('#add-picture');
+    let buttonAddEdit = document.querySelector('#add-image');
     let input = document.getElementById(idInput);
     input.addEventListener("change", () => {
         createFrame('#trick_form_images_', index, "img", "rounded img-");
         createButtonSupp('#trick_form_images_', index, "Supp image", "#add-image");
         let image = document.querySelector(img);
         image.src = URL.createObjectURL(input.files[0]);
-        buttonAdd.disabled = false;
+        buttonAddEdit.disabled = false;
     });
 }
 
 function loadIframeVid(iframe, idInput) {
-    let buttonAdd = document.querySelector('#add-video');
+    let buttonAdd = document.querySelector('#add-video-edit');
     let frame = document.querySelector(iframe);
     let input = document.getElementById(idInput);
     input.addEventListener("change", () => {
@@ -33,7 +33,7 @@ function createButtonSuppr(selector, index, text, buttonSelector) {
     let div = document.querySelector(selector + index)
     let buttonSupp = document.createElement("button");
     buttonSupp.type = "button";
-    buttonSupp.className = "btn btn-danger d-flex delete-" + index;
+    buttonSupp.className = "btn btn-danger my-2 d-flex delete-" + index;
     buttonSupp.textContent = text;
     div.append(buttonSupp);
     buttonSupp.addEventListener("click", function () {
@@ -62,17 +62,17 @@ function addFieldPicture() {
 function addFieldVideo() {
 
     let divVideo = document.querySelector('#videos-edit');
-    let divImages = document.querySelector('#_videos');
+    let divVideoEdition = document.querySelector('#_videos');
     let prototype = divVideo.dataset.prototype;
     let index1 = divVideo.querySelectorAll("div").length;
-    let index2 = divImages.querySelectorAll(".trick-card-container").length;
+    let index2 = divVideoEdition.querySelectorAll(".trick-card-container").length;
 
     let index = index1+index2
 
     prototype = prototype.replace(/__name__/g, index);
     divVideo.insertAdjacentHTML("beforeend", prototype);
     createFrameEdit('#trick_form_videos_', index, "iframe", "rounded iframe-");
-    createButtonSuppr('#trick_form_videos_', index, "Supp video", "#add-videos-edit");
+    createButtonSuppr('#trick_form_videos_', index, "Supprimer video", "#add-videos-edit");
     loadIframeVid("iframe.iframe-" + index + "", "trick_form_videos_" + index + "_filename")
 
 }
@@ -82,7 +82,7 @@ function addFieldVideo() {
 document.addEventListener('DOMContentLoaded', function () {
 
     let buttonAddPicture = document.querySelector('#add-image');
-    let buttonAddVideo = document.querySelector('#add-videos');
+    let buttonAddVideo = document.querySelector('#add-video-edit');
 
     buttonAddPicture.addEventListener("click", function () {
         buttonAddPicture.disabled = true;

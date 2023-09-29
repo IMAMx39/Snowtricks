@@ -19,15 +19,15 @@
                             <a class="badge bg-info text-decoration-none link-light">Groupe: {{ trick.category.name }} </a>
 
                         </header>
+                        {{ form_start(form) }}
                         <figure class="mb-4 me-3 d-flex">
                             <img class="img-fluid rounded card-trick-show"
                                     {# src="{{ asset('uploads/tricks') }}/{{ trick.images|first.filename }}" #}
                                  src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
                                  alt="image de trick {{ trick.name|raw }}"/>
                         </figure>
-                        {{ form_start(form) }}
-                        <div class="d-flex overflow-auto mb-5" >
-                            <div id="_images" class="d-flex overflow-auto mb-5" >
+                        <div class="d-flex  overflow-auto mb-5" >
+                            <div id="_images" class="d-flex mb-5" >
                                 {% for image in form.images|reverse %}
                                     <div class="trick-card-container m-4" >
                                         <div class="card trick-card" style="width: 18rem;">
@@ -58,8 +58,8 @@
                                         </div>
                                     </div>
                                 {% endfor %}
-{#                            </div>#}
-{#                            <div id="_videos" >#}
+                            </div>
+                            <div id="_videos" class="d-flex">
                                 {% for video in form.videos %}
                                     <div class="trick-card-container m-4">
                                         <div class="card trick-card" style="width: 18rem;">
@@ -109,7 +109,7 @@
                                 <div id="videos-edit"
                                      data-prototype="{{ form_row(form.videos.vars.prototype)|e('html_attr') }}">
                                 </div>
-                                <button type="button" id="add-videos-edit" class="btn btn-info">Ajouter une video</button>
+                                <button type="button" id="add-video-edit" class="btn btn-info">Ajouter une video</button>
                             </div>
                         </div>
                         <hr>
@@ -127,5 +127,8 @@
     </section>
 
 {% endblock %}
-
+{% block javascripts %}
+ {{ parent() }}
+    <script src="{{ asset('js/edit_trick.js') }}" defer></script>
+{% endblock %}
 

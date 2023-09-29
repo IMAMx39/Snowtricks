@@ -89,10 +89,7 @@ class TrickController extends AbstractController
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
-            $this->addFlash(
-                'success',
-                'Votre commentaire a été bien envoyer'
-            );
+            $this->addFlash('success', 'Votre commentaire a été bien envoyer');
 
             return $this->redirectToRoute('app_trick', ['slug' => $trick->getSlug()]);
         }
@@ -144,10 +141,8 @@ class TrickController extends AbstractController
             $this->handleImages($editTrickForm->get('images')->getData(), $slug, $trick);
 
             $this->entityManager->flush();
-            $this->addFlash(
-                'success',
-                'Le trick "' . $trickTitle . '" a bien été modifié'
-            );
+            $this->addFlash('success', 'Le trick "' . $trickTitle . '" a bien été modifié');
+
             return $this->redirectToRoute('app_trick', ['slug' => $slug]);
         }
 
@@ -181,7 +176,7 @@ class TrickController extends AbstractController
         $image = $image->find($id);
         //$this->fileManager->deleteTrickImage($slug, $image->getFilename());
         $trick->removeImage($image);
-
+        $this->addFlash('success', 'La photo "' . $image->getFilename() . '" a bien été supprimé');
         $this->entityManager->persist($trick);
         $this->entityManager->flush();
 
@@ -192,13 +187,12 @@ class TrickController extends AbstractController
     public function deleteVideo(string $slug, int $id): Response
     {
         $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
-        $image = $this->entityManager->getRepository(Video::class);
-        $image = $image->find($id);
-        $trick->removeVideo($image);
-
+        $video = $this->entityManager->getRepository(Video::class);
+        $video = $video->find($id);
+        $trick->removeVideo($video);
         $this->entityManager->persist($trick);
         $this->entityManager->flush();
-
+        $this->addFlash('success', 'La video "' . $video->getFilename() . '" a bien été supprimé');
         return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
     }
 

@@ -4,14 +4,17 @@
 
 {% block body %}
     <!-- Header-->
-    <header class="header py-5">
+    <header class="header py-5" id="up">
         <div class="d-flex justify-content-center col-xl-auto header-main-pic">
-            <img class="img-fluid rounded"
+            <img class="img-fluid rounded "
                  src="{{ asset('assets/img/snow.jpg') }}"
                  alt="..."/>
+            <a href="#down" class="arrow-down">
+                <i class="bi bi-arrow-down-circle-fill"></i>
+            </a>
         </div>
     </header>
-    <section class="py-5">
+    <section class="py-5" id="down">
         <div class=" px-5 my-5">
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-8 col-xl-6">
@@ -26,7 +29,9 @@
             {% endfor %}
             {% include 'home/_load_more_tricks.html.twig' %}
         </div>
-
+        <a href="#up" class="arrow-up">
+            <i class="bi bi-arrow-up-circle-fill"></i>
+        </a>
     </section>
 
 {% endblock %}

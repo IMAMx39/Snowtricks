@@ -3,7 +3,7 @@ function loadImg(img, idInput, index) {
     let input = document.getElementById(idInput);
     input.addEventListener("change", () => {
         createFrame('#trick_form_images_', index, "img", "rounded img-");
-        createButtonSupp('#trick_form_images_', index, "Supp picture", "#add-picture");
+        createButtonSupp('#trick_form_images_', index, "Supprimer l'image", "#add-picture");
         let image = document.querySelector(img);
         image.src = URL.createObjectURL(input.files[0]);
         buttonAdd.disabled = false;
@@ -33,7 +33,7 @@ function createButtonSupp(selector, index, text, buttonSelector) {
     let div = document.querySelector(selector + index)
     let buttonSupp = document.createElement("button");
     buttonSupp.type = "button";
-    buttonSupp.className = "btn btn-danger d-flex delete-" + index;
+    buttonSupp.className = "btn btn-danger d-flex my-2 delete-" + index;
     buttonSupp.textContent = text;
     div.append(buttonSupp);
     buttonSupp.addEventListener("click", function () {

@@ -31,10 +31,11 @@
                         <div>
                             {% if user.isBlocked == false %}
                                 <a href="{{ path('app_block_user',{'id': user.id}) }}"
-                                   onclick="return confirm('Vous voulez vraiment blocker ce utilisateur ?');"
+                                   onclick="return confirmationBlock(event)"
                                    class="btn btn-warning mt-2">Bloquer</a>
                             {% else %}
                                 <a href="{{ path('app_unblock_user',{'id': user.id}) }}"
+                                   onclick="return confirmationDeBlock(event)"
                                    class="btn btn-info mt-2">Debloquer</a>
                             {% endif %}
                         </div>
@@ -88,3 +89,54 @@
         </div>
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function confirmationBlock(ev) {
+            ev.preventDefault();
+            let urlToRedirect =ev.currentTarget.getAttribute('href'); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            console.log(urlToRedirect);
+            swal({
+                title: "Attention !!",
+                text: 'Vous voulez vraiment blocker ce utilisateur ?',
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        window.location = urlToRedirect;
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+        }
+        function confirmationDeBlock(ev) {
+            ev.preventDefault();
+            let urlToRedirect =ev.currentTarget.getAttribute('href'); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            console.log(urlToRedirect);
+            swal({
+                title: "Attention !!",
+                text: 'Vous voulez vraiment débloquer cet utilisateur ?',
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        window.location = urlToRedirect;
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+        }
+    </script>
+{% endblock %}
+
+

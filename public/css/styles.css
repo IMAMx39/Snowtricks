@@ -12671,6 +12671,7 @@ html {
     display: flex;
     justify-content: center;
 }
+
 .div-edit {
     display: flex;
     justify-content: space-around;
@@ -12682,4 +12683,31 @@ html {
     border-right: thin black solid;
     height: 100vh;
     overflow: auto;
+}
+
+a.arrow-down {
+    position: absolute;
+    right: 5rem;
+    bottom: -7rem;
+    text-decoration: none;
+    color: black;
+    z-index: 100;
+}
+
+.bi-arrow-down-circle-fill,
+.bi-arrow-up-circle-fill {
+    font-size: 4rem;
+}
+
+a.arrow-up {
+    position: absolute;
+    right: 5rem;
+    bottom: 0;
+    text-decoration: none;
+    color: black;
+    z-index: 100;
+}
+
+section#down {
+    position: relative;
 }
