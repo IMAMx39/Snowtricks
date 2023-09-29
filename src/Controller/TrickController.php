@@ -131,6 +131,8 @@ class TrickController extends AbstractController
         $picturesUri = $this->getParameter('tricks_images_uri');
         $avatar = $this->getParameter('avatars_uri');
         $editTrickForm = $this->createForm(TrickFormType::class, $trick);
+        $formVid = $this->createForm(VideoFormType::class);
+        $formImage = $this->createForm(ImageFormType::class);
         $trickTitle = $trick->getName();
         $editTrickForm->handleRequest($request);
         if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
@@ -154,6 +156,9 @@ class TrickController extends AbstractController
             'imagesUrl' => $picturesUri,
             'avatar' => $avatar,
             'form' => $editTrickForm->createView(),
+            'formImage' => $formImage->createView(),
+            'formVideo' => $formVid->createView(),
+
         ]);
 
     }
@@ -200,7 +205,7 @@ class TrickController extends AbstractController
     #[Route('/trick/{slug}/edit/video/add', name: 'app_trick_add_video')]
     public function addVideo(Request $request, string $slug): Response
     {
-        $trick = $this->trickRepository->findOneOr404(['slug' => $slug]);
+        $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
         $video = new Video();
         $form = $this->createForm(VideoFormType::class, $video);
         $form->handleRequest($request);
@@ -215,6 +220,9 @@ class TrickController extends AbstractController
         return $this->redirectToRoute('app_trick_edit', ['slug' => $slug]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/trick/{slug}/edit/image/add', name: 'app_trick_add_image')]
     public function addImage(Request $request, string $slug): Response
     {
@@ -225,6 +233,7 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $fileName = $this->fileManager->uploadTrickImage($image->getFile(), $slug);
+            $this->handleImages($form->get('images')->getData(), $slug, $trick);
             $image->setFileName($fileName);
             $trick->addImage($image);
             $this->entityManager->persist($trick);

@@ -3,7 +3,6 @@
 
 {% block body %}
     {% set defaultImage = trick.images is empty %}
-    {{ form_start(form) }}
     <section class="py-5 position-relative">
         <div class="container px-5 my-5">
             <div class="row gx-5">
@@ -26,85 +25,106 @@
                                  src="{{ defaultImage ? imagesUrl ~ "default.png" : imagesUrl ~ trick.slug ~ "/" ~ trick.images|first.fileName }}"
                                  alt="image de trick {{ trick.name|raw }}"/>
                         </figure>
+                        {{ form_start(form) }}
+                        <div class="d-flex overflow-auto mb-5" >
+                            <div id="_images" class="d-flex overflow-auto mb-5" >
+                                {% for image in form.images|reverse %}
+                                    <div class="trick-card-container m-4" >
+                                        <div class="card trick-card" style="width: 18rem;">
+                                            <img class="card-img-top"
+                                                 src="{{ imagesUrl ~ trick.slug ~ "/" ~ image.vars.value.fileName }}"
+                                                 alt="image de trick {{ trick.name }}"/>
+                                        </div>
+                                        <div class="card-body edit-btn">
+                                            <div class="d-flex justify-content-end">
+                                                <a class="btn btn-outline-warning me-2" data-bs-toggle="collapse"
+                                                   data-bs-target="#collapsePicture{{ loop.index }}"
+                                                   aria-expanded="false">
+                                                    <i class="bi bi-pen"></i>
+                                                </a>
+                                                <a class="btn btn-outline-danger"
+                                                   href="{{ path('app_trick_delete_image', {'slug': trick.slug, 'id': image.vars.value.id }) }}"
+                                                   onclick="return confirm('Vous voulez vraiment supprimer cette image ?');"
+                                                >
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="collapsePicture{{ loop.index }}" class="collapse">
+                                            <div class="mt-2">
+                                                {{ form_label(image.file) }}
+                                                {{ form_widget(image.file) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+{#                            </div>#}
+{#                            <div id="_videos" >#}
+                                {% for video in form.videos %}
+                                    <div class="trick-card-container m-4">
+                                        <div class="card trick-card" style="width: 18rem;">
+                                            <iframe src="{{ video.vars.value.filename }}"
+                                                    class="card-img-top"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                    allowfullscreen>
 
-                        <div class="d-flex overflow-auto mb-5">
-                            {% for image in form.images %}
-                                <div class="trick-card-container m-4">
-                                    <div class="card trick-card" style="width: 18rem;">
-                                        <img class="card-img-top"
-                                             src="{{ imagesUrl ~ trick.slug ~ "/" ~ image.vars.value.fileName }}"
-                                             alt="image de trick {{ trick.name }}"/>
-                                    </div>
-                                    <div class="card-body edit-btn">
-                                        <div class="d-flex justify-content-end">
-                                            <a class="btn btn-primary me-2" data-bs-toggle="collapse"
-                                               data-bs-target="#collapsePicture{{ loop.index }}"
-                                               aria-expanded="false">
-                                                <i class="bi bi-pen"></i>
-                                            </a>
-                                            <a class="btn btn-danger"
-                                               href="{{ path('app_trick_delete_image', {'slug': trick.slug, 'id': image.vars.value.id }) }}"
-                                               onclick="return confirm('Vous voulez vraiment supprimer cette image ?');"
-                                            >
-                                                <i class="bi bi-trash"></i>
-                                            </a>
+                                            </iframe>
+                                        </div>
+                                        <div class="edit-btn">
+                                            <div class="d-flex justify-content-between">
+                                                <a class="btn btn-outline-warning me-2" data-bs-toggle="collapse"
+                                                   data-bs-target="#collapseVideo{{ loop.index }}"
+                                                   aria-expanded="false">
+                                                    <i class="bi bi-pen"></i>
+                                                </a>
+                                                <a class="btn btn-outline-danger"
+                                                   href="{{ path('app_trick_delete_video', {'slug': trick.slug, 'id': video.vars.value.id }) }}"
+                                                   onclick="return confirm('Vous voulez vraiment supprimer cette video ?');"
+                                                >
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div id="collapseVideo{{ loop.index }}" class="collapse">
+                                            <div class="mt-2">
+                                                {{ form_label(video.filename) }}
+                                                {{ form_widget(video.filename) }}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div id="collapsePicture{{ loop.index }}" class="collapse">
-                                        <div class="mt-2">
-                                            {{ form_label(image.file) }}
-                                            {{ form_widget(image.file) }}
-                                        </div>
-                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="div-edit">
+                            <div>
+                                <div id="images"
+                                     data-prototype="{{ form_row(form.images.vars.prototype)|e('html_attr') }}">
                                 </div>
-                            {% endfor %}
-                            {% for video in form.videos %}
-                                <div class="trick-card-container m-4">
-                                    <div class="card trick-card" style="width: 18rem;">
-                                        <iframe src="{{ video.vars.value.filename }}"
-                                                class="card-img-top"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                allowfullscreen>
-
-                                        </iframe>
-                                    </div>
-                                    <div class="edit-btn">
-                                        <div class="d-flex justify-content-between">
-                                            <a class="btn btn-primary me-2" data-bs-toggle="collapse"
-                                               data-bs-target="#collapsePicture{{ loop.index }}"
-                                               aria-expanded="false">
-                                                <i class="bi bi-pen"></i>
-                                            </a>
-                                            <a class="btn btn-danger"
-                                               href="{{ path('app_trick_delete_video', {'slug': trick.slug, 'id': video.vars.value.id }) }}"
-                                               onclick="return confirm('Vous voulez vraiment supprimer cette video ?');"
-                                            >
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div id="collapsePicture{{ loop.index }}" class="collapse">
-                                        <div class="mt-2">
-                                            {{ form_label(video.filename) }}
-                                            {{ form_widget(video.filename) }}
-                                        </div>
-                                    </div>
+                                <button type="button" id="add-image" class="btn btn-info">Ajouter une image</button>
+                            </div>
+                            <hr>
+                            <div>
+                                <div id="videos-edit"
+                                     data-prototype="{{ form_row(form.videos.vars.prototype)|e('html_attr') }}">
                                 </div>
-                            {% endfor %}
+                                <button type="button" id="add-videos-edit" class="btn btn-info">Ajouter une video</button>
+                            </div>
                         </div>
                         <hr>
                         <div class="form-row small">{{ form_row(form.name) }}</div>
                         <div class="form-row description">{{ form_row(form.description) }}</div>
                         <div class="form-row small">{{ form_row(form.category, {'label' : 'Catégorie'}) }}</div>
                         <div class="mb-3" id="submit-btn">{{ form_row(form.submit) }}</div>
-                        <hr>
+
+                        {{ form_end(form) }}
+
                     </article>
                 </div>
             </div>
         </div>
     </section>
-    {{ form_end(form) }}
 
 {% endblock %}
 

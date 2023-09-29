@@ -12619,7 +12619,21 @@ html {
     background-color: gray;
 }
 
+#images img {
+    height: 150px;
+    width: 250px;
+    object-fit: cover;
+    background-color: gray;
+}
+
 #videos iframe {
+    height: 200px;
+    width: 400px;
+    object-fit: cover;
+    background-color: gray;
+}
+
+#videos-edit iframe {
     height: 200px;
     width: 400px;
     object-fit: cover;
@@ -12632,7 +12646,7 @@ html {
 }
 
 .icon-edit {
-    height: 20px;
+    height: 25px;
 }
 
 .trick-card img {
@@ -12656,4 +12670,16 @@ html {
 .show-btn {
     display: flex;
     justify-content: center;
+}
+.div-edit {
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    flex-wrap: nowrap;
+}
+
+.b-r {
+    border-right: thin black solid;
+    height: 100vh;
+    overflow: auto;
 }

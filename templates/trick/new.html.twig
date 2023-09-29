@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block title %}Ajouter un trick{% endblock %}
-
+  {% block javascripts %}
+      <script src="{{ asset('js/scripts.js') }}"></script>
+      <script src="{{ asset('js/load_trick_field.js') }}" defer></script>
+  {% endblock %}
 
 {% block body %}
     <section class="py-5">
@@ -8,10 +11,10 @@
             <!-- Contact form-->
             <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
                 <div class="text-center mb-5">
-                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i>
+                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+                        <i class="bi bi-plus-square"></i>
                     </div>
                     <h1 class="fw-bolder">Ajouter un trick</h1>
-                    <p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
                 </div>
                 <div class="row gx-5 justify-content-center">
                     <div class="col-lg-8 col-xl-6">
@@ -26,12 +29,12 @@
                         <div id="pictures"
                              data-prototype="{{ form_row(formTrick.images.vars.prototype)|e('html_attr') }}">
                         </div>
-                        <button type="button" id="add-picture" class="btn btn-outline-info">Ajouter une image</button>
+                        <button type="button" id="add-picture" class="btn btn-info">Ajouter une image</button>
                         <hr>
                         <div id="videos"
                              data-prototype="{{ form_row(formTrick.videos.vars.prototype)|e('html_attr') }}">
                         </div>
-                        <button type="button" id="add-video" class="btn btn-outline-info">Ajouter une video</button>
+                        <button type="button" id="add-video" class="btn btn-info">Ajouter une video</button>
                         {{ form_row(formTrick.videos) }}
                         <!-- images -->
                         {% for image in formTrick.images %}

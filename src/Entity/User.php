@@ -205,7 +205,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function IsBlocked(): ?bool
+    public function isBlocked(): ?bool
     {
         return $this->isBlocked;
     }
