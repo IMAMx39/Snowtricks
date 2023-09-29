@@ -28,11 +28,16 @@ class TrickFormType extends AbstractType
                     ]),
                     new Assert\NotBlank(['message' => 'Vous devez entrez un titre pour le Trick']),
                 ],
-                'attr' => ['class' => 'form-control mb-3'],
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                ],
                 'label' => 'Titre'
             ])
             ->add('description', TextareaType::class, [
-                'attr' => ['class' => 'form-control mb-3'],
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'style' => 'height: 150px'
+                ],
                 'label' => 'Description'
             ])
             ->add('category', EntityType::class, [

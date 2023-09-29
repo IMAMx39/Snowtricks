@@ -174,7 +174,7 @@ class TrickController extends AbstractController
         $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
         $image = $this->entityManager->getRepository(Image::class);
         $image = $image->find($id);
-        //$this->fileManager->deleteTrickImage($slug, $image->getFilename());
+        $this->fileManager->deleteTrickImage($slug, $image->getFilename());
         $trick->removeImage($image);
         $this->addFlash('success', 'La photo "' . $image->getFilename() . '" a bien été supprimé');
         $this->entityManager->persist($trick);

@@ -35,7 +35,13 @@ class Video
             $this->filename = $videoUrl;
             return $this;
         }
-        $this->filename = str_replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/', $videoUrl);
+        if (str_contains($this->filename, 'https://www.youtube.com/watch?v=')) {
+            $this->filename = str_replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/', $videoUrl);
+        }
+
+        if (str_contains($videoUrl, 'www.dailymotion.com/')) {
+            $this->filename = str_replace('www.dailymotion.com/', 'www.dailymotion.com/embed/', $videoUrl);
+        }
         return $this;
     }
 

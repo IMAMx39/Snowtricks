@@ -21,19 +21,20 @@
                             </div>
                             {% if app.user %}
                                 <div class="d-flex flex-nowrap z-index-100">
-                                    <div class="z-index-100">
-                                        <a class="mb-3 text-center"
+                                    <div class="z-index-100 me-2">
+                                        <a class="btn btn-outline-warning mb-3 text-center"
                                            href="{{ path('app_trick_edit', {'slug': trick.slug}) }}"
                                         >
-                                            <img class="icon-edit" src="{{ asset('medias/icons/pencil.png') }}" alt="">
+                                            <i class="bi bi-pen"></i>
+
                                         </a>
                                     </div>
                                     <div class="z-index-100">
-                                        <a class=" mb-3 text-center"
+                                        <a class="btn btn-outline-danger mb-3 text-center"
                                            href="{{ path('app_trick_delete', {'slug': trick.slug}) }}"
                                            onclick="return confirm('Vous voulez vraiment supprimer ce trick ?');"
                                         >
-                                            <img class="icon-edit" src="{{ asset('medias/icons/trash.png') }}" alt="">
+                                            <i class="bi bi-trash"></i>
                                         </a>
                                     </div>
                                 </div>
