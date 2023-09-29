@@ -1,0 +1,50 @@
+{% set flashbagSuccess = app.session.flashbag.get('success') %}
+{% set flashbagSuccessPopup = app.session.flashbag.get('success_popup') %}
+{% set flashbagError = app.session.flashbag.get('error') %}
+{% set flashbagInfo = app.session.flashbag.get('info') %}
+{% if flashbagSuccess is not empty or flashbagSuccessPopup is not empty or flashbagError is not empty or flashbagInfo is not empty %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const notyf = new Notyf({
+                types: [
+                    {
+                        type: 'info',
+                        background: 'blue',
+                        icon: true
+                    }
+                ]
+            });
+            const duration = 5000;
+            const position = {x: 'center', y: 'top'}
+            const dismissible = true;
+            {% for message in flashbagSuccess %}
+            notyf.success({
+                duration: duration,
+                dismissible: dismissible,
+                position: position,
+                ripple: true,
+                message: "{{ message }}"
+            });
+            {% endfor %}
+            {% for message in flashbagError %}
+            notyf.error({
+                duration: duration,
+                dismissible: dismissible,
+                position: position,
+                ripple: true,
+                message: "{{ message }}"
+            });
+            {% endfor %}
+            {% for message in flashbagInfo %}
+            notyf.open({
+                duration: duration,
+                dismissible: dismissible,
+                position: position,
+                ripple: true,
+                type: 'info',
+                message: "{{ message }}"
+            });
+            {% endfor %}
+        });
+    </script>
+{% endif %}

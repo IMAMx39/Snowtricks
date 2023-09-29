@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block title %}Ajouter un trick{% endblock %}
-
+  {% block javascripts %}
+      <script src="{{ asset('js/scripts.js') }}" ></script>
+      <script src="{{ asset('js/load_trick_field.js') }}" defer></script>
+  {% endblock %}
 
 {% block body %}
     <section class="py-5">
