@@ -11,6 +11,7 @@ use App\Form\ImageFormType;
 use App\Form\TrickFormType;
 use App\Form\VideoFormType;
 use App\Repository\CommentRepository;
+use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use App\Service\ManagerFile;
 use DateTimeImmutable;
@@ -30,6 +31,7 @@ class TrickController extends AbstractController
         private readonly CommentRepository      $commentRepository,
         private readonly ManagerFile            $fileManager,
         private readonly EntityManagerInterface $entityManager,
+        private readonly ImageRepository        $imageRepository
     )
     {
     }
@@ -57,10 +59,7 @@ class TrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
-            $this->addFlash(
-                'success',
-                'Votre trick a été bien enregistré'
-            );
+            $this->addFlash('success', 'Votre trick a été bien enregistré');
 
             return $this->redirectToRoute('app_trick', ['slug' => $slug]);
         }
@@ -128,8 +127,6 @@ class TrickController extends AbstractController
         $picturesUri = $this->getParameter('tricks_images_uri');
         $avatar = $this->getParameter('avatars_uri');
         $editTrickForm = $this->createForm(TrickFormType::class, $trick);
-        $formVid = $this->createForm(VideoFormType::class);
-        $formImage = $this->createForm(ImageFormType::class);
         $trickTitle = $trick->getName();
         $editTrickForm->handleRequest($request);
         if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
@@ -139,7 +136,7 @@ class TrickController extends AbstractController
             $trick->setUpdatedAt(new DateTimeImmutable());
             $this->fileManager->renameTrickPicsDir($oldSlug, $slug);
             $this->handleImages($editTrickForm->get('images')->getData(), $slug, $trick);
-
+            //$this->entityManager->persist($trick);
             $this->entityManager->flush();
             $this->addFlash('success', 'Le trick "' . $trickTitle . '" a bien été modifié');
 
@@ -151,8 +148,6 @@ class TrickController extends AbstractController
             'imagesUrl' => $picturesUri,
             'avatar' => $avatar,
             'form' => $editTrickForm->createView(),
-            'formImage' => $formImage->createView(),
-            'formVideo' => $formVid->createView(),
 
         ]);
 
@@ -169,11 +164,10 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/{slug}/edit/image/{id}/delete', name: 'app_trick_delete_image')]
-    public function deleteImage(string $slug, int $id): Response
+    public function deleteImage(string $slug, Image $image): Response
     {
         $trick = $this->trickRepository->findOneBy(['slug' => $slug]);
-        $image = $this->entityManager->getRepository(Image::class);
-        $image = $image->find($id);
+        $image = $this->imageRepository->find(['id' => $image->getId()]);
         $this->fileManager->deleteTrickImage($slug, $image->getFilename());
         $trick->removeImage($image);
         $this->addFlash('success', 'La photo "' . $image->getFilename() . '" a bien été supprimé');
@@ -250,6 +244,9 @@ class TrickController extends AbstractController
             if ($file === null) {
                 continue;
             }
+            //if ($file !== null) {
+            //    dd($image);
+            //}
 
             $fileName = $this->fileManager->uploadTrickImage($file, $trickSlug);
             $image->setFileName($fileName);

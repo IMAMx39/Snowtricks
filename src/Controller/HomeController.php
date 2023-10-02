@@ -19,9 +19,11 @@ class HomeController extends AbstractController
     {
         $offset = max(0, $request->query->getInt('offset', 0));
         $tricks = $this->trickRepository->getTricksPaginator($offset);
+        $tricksAll = $this->trickRepository->findAll();
         $imagesUrl = $this->getParameter('tricks_images_uri');
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks,
+            'allTricks' => $tricksAll,
             'imagesUrl' => $imagesUrl,
             'offset' => min(count($tricks), $offset + TrickRepository::PAGINATOR_PER_PAGE),
         ]);
@@ -33,9 +35,11 @@ class HomeController extends AbstractController
         $offset = max(0, $request->query->getInt('offset', 0));
         $tricks = $this->trickRepository->getTricksPaginator($offset);
         $imagesUrl = $this->getParameter('tricks_images_uri');
+        $tricksAll = $this->trickRepository->findAll(count($tricks));
 
         return $this->render('home/_load_more_tricks.html.twig', [
             'tricks' => $tricks,
+            'allTricks' => $tricksAll,
             'offset' => min(count($tricks), $offset + TrickRepository::PAGINATOR_PER_PAGE),
             'imagesUrl' => $imagesUrl
         ]);

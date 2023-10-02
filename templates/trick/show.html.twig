@@ -28,7 +28,7 @@
                         </figure>
 
                         <div class="d-flex overflow-auto mb-5">
-                            {% for pic in trick.images |reverse %}
+                            {% for pic in trick.images |sort%}
                                 <div class="col-lg-3 ">
                                     <figure class="mb-4 me-3 d-flex">
                                         <img class="img-fluid rounded card-img-bottom card-tricks "
@@ -49,7 +49,7 @@
                                 </a>
                                 <a class="btn btn-outline-danger btn-block mb-3 text-center"
                                    href="{{ path('app_trick_delete', {'slug': trick.slug}) }}"
-                                   onclick="return confirm('Vous voulez vraiment supprimer ce trick ?');"
+                                   onclick="return confirmationDelete(event,'Vous voulez vraiment supprimer ce trick ?');"
                                 >
                                     <i class="bi colored bi-trash-fill fs-3"></i>
                                 </a>
@@ -70,9 +70,9 @@
                                     <!-- Comment form-->
                                     {{ form_start(form) }}
 
-                                    {% for message in app.flashes('success') %}
-                                        <div class="alert alert-success"> {{ message }} </div>
-                                    {% endfor %}
+{#                                    {% for message in app.flashes('success') %}#}
+{#                                        <div class="alert alert-success"> {{ message }} </div>#}
+{#                                    {% endfor %}#}
 
                                     {{ form_end(form) }}
                                 </div>
@@ -89,3 +89,32 @@
         </div>
     </section>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{#    <script src="{{ asset('js/edit_trick.js') }}" defer></script>#}
+    <script>
+        function confirmationDelete(ev, message) {
+            ev.preventDefault();
+            let urlToRedirect = ev.currentTarget.getAttribute('href'); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            console.log(urlToRedirect);
+            swal({
+                title: "Attention !!",
+                text: message,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        window.location = urlToRedirect;
+                    } else {
+                        swal("Votre trick est sûr !");
+                    }
+                });
+        }
+    </script>
+{% endblock %}
+

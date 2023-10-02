@@ -13,14 +13,19 @@
         </div>
     </div>
 {% endfor %}
-<div class="justify-content-center">
-    <button class="btn btn-outline-primary btn-block mb-3 text-center justify-content-center d-flex"
-            hx-get="{{ path('app_trick_comment', { slug: trick.slug, offset: offset  }) }}"
-            hx-swap="outerHTML"
-    >
-        Voir plus de commentaires
-    </button>
-</div>
+
+{% if comments|length > 10 %}
+
+        <div class="justify-content-center">
+            <button class="btn btn-outline-primary btn-block mb-3 text-center justify-content-center d-flex"
+                    hx-get="{{ path('app_trick_comment', { slug: trick.slug, offset: offset  }) }}"
+                    hx-swap="outerHTML"
+            >
+                Voir plus de commentaires
+            </button>
+        </div>
+
+{% endif %}
 
 
 

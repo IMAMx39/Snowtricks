@@ -32,7 +32,7 @@
                                     <div class="z-index-100">
                                         <a class="btn btn-outline-danger mb-3 text-center"
                                            href="{{ path('app_trick_delete', {'slug': trick.slug}) }}"
-                                           onclick="return confirm('Vous voulez vraiment supprimer ce trick ?');"
+                                           onclick="return confirmationDelete(event,'Vous voulez vraiment supprimer ce trick ?');"
                                         >
                                             <i class="bi bi-trash"></i>
                                         </a>
@@ -44,11 +44,10 @@
                 </div>
             </div>
         </div>
-
     {% endfor %}
-    <div class="justify-content-center align-content-center">
+    <div class="">
         <a id="load-more">
-            <div  >
+            <div>
                 <button class="btn btn-outline-primary btn-block mb-3 text-center"
                         hx-get="{{ path('app_load_more_ticks', { offset: offset  }) }}"
                         hx-swap="outerHTML"
@@ -59,5 +58,31 @@
         </a>
     </div>
 </div>
+{% block javascripts %}
+    <script>
+        function confirmationDelete(ev, message) {
+            ev.preventDefault();
+            let urlToRedirect = ev.currentTarget.getAttribute('href'); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+            console.log(urlToRedirect);
+            swal({
+                title: "Attention !!",
+                text: message,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        window.location = urlToRedirect;
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+        }
+    </script>
+{% endblock %}
 <!-- End -->
 

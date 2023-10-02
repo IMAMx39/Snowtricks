@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 class Video
@@ -13,6 +15,13 @@ class Video
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\AtLeastOneOf([
+        new Assert\Regex('/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|live\/|v\/)?)([\w\-]+)(\S+)?$/'),
+        new Assert\Regex('/^.+dailymotion.com\/(video|hub)\/([^_]+)[^#]*(#video=([^_&]+))?/'),
+    ],
+        message: 'The video URL is invalid, please insert the URL of a Youtube or Dailymotion video.',
+        includeInternalMessages: false
+    )]
     #[ORM\Column(length: 255)]
     private ?string $filename = null;
 
@@ -31,17 +40,23 @@ class Video
 
     public function setFilename(?string $videoUrl): static
     {
-        if (str_contains($videoUrl, '/embed/')) {
-            $this->filename = $videoUrl;
-            return $this;
-        }
-        if (str_contains($this->filename, 'https://www.youtube.com/watch?v=')) {
-            $this->filename = str_replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/', $videoUrl);
+        if ($videoUrl) {
+            if (str_contains($videoUrl, 'youtube.com')) {
+                if (str_contains($videoUrl, '/embed/')) {
+                    $this->filename = $videoUrl;
+                } else {
+                    $this->filename = str_replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/', $videoUrl);
+                }
+            }
+            elseif (str_contains($videoUrl, 'dailymotion.com')) {
+                if (str_contains($videoUrl, '/embed/')) {
+                    $this->filename = $videoUrl;
+                } else {
+                    $this->filename = str_replace('https://www.dailymotion.com/video/', 'https://www.dailymotion.com/embed/video/', $videoUrl);
+                }
+            }
         }
 
-        if (str_contains($videoUrl, 'www.dailymotion.com/')) {
-            $this->filename = str_replace('www.dailymotion.com/', 'www.dailymotion.com/embed/', $videoUrl);
-        }
         return $this;
     }
 
