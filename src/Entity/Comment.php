@@ -78,4 +78,9 @@ class Comment
 
         return $this;
     }
+
+    public function getExtract(): string
+    {
+        return \substr($this->content, 0, 40) . '...';
+    }
 }

@@ -19,16 +19,27 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin', name: 'app_admin')]
-    public function users(): Response
+    public function admin(): Response
     {
         $users = $this->userRepository->findByRole(['ROLE_USER']);
         $avatar = $this->getParameter('avatars_uri');
         $imagesUrl = $this->getParameter('tricks_images_uri');
 
-        return $this->render('admin/users.html.twig', [
+        return $this->render('admin/admin.html.twig', [
             'users' => $users,
             'avatar' => $avatar,
             'imagesUrl' => $imagesUrl,
+        ]);
+    }
+    #[Route('/admin/users', name: 'app_admin_users')]
+    public function users() :Response
+    {
+        $users = $this->userRepository->findByRole(['ROLE_USER']);
+        $avatar = $this->getParameter('avatars_uri');
+
+        return $this->render('admin/users.html.twig', [
+            'users' => $users,
+            'avatar' => $avatar,
         ]);
     }
 
@@ -39,7 +50,7 @@ class AdminController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         $this->addFlash('info', "L'utilisateur à été bien bloqué");
-        return $this->redirectToRoute('app_admin');
+        return $this->redirectToRoute('app_admin_users');
     }
 
     #[Route('/admin/user/{id}/unblock', name: 'app_unblock_user')]
@@ -49,6 +60,6 @@ class AdminController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         $this->addFlash('info', "L'utilisateur à été bien débloqué");
-        return $this->redirectToRoute('app_admin');
+        return $this->redirectToRoute('app_admin_users');
     }
 }

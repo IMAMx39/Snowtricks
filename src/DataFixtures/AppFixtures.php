@@ -174,11 +174,20 @@ class AppFixtures extends Fixture
         $janedoe->setUsername("crestophe.durand")
             ->setEmail("crestophe.durand@gmail.com")
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
-            ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
+            ->setPassword($this->hasher->hashPassword($johndoe, "123456"))
             ->setIsVerified(true)
             ->setBlocked(false);
 
         $users[] = $janedoe;
+        $user1 = new User();
+        $user1->setUsername("user.durand")
+            ->setEmail("user.durand@gmail.com")
+            ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
+            ->setPassword($this->hasher->hashPassword($user1, "123456"))
+            ->setIsVerified(true)
+            ->setBlocked(false);
+
+        $users[] = $user1;
 
         // Comments from users on tricks
         $comments = $this->generateComments($users, $tricks);
@@ -188,7 +197,7 @@ class AppFixtures extends Fixture
         $admin->setUsername("Admin")
             ->setEmail("admin@admin.com")
             ->setCreatedAt($this->getImmutableDateDaysAgo(mt_rand(0,14)))
-            ->setPassword($this->hasher->hashPassword($johndoe, "Password123"))
+            ->setPassword($this->hasher->hashPassword($johndoe, "123456"))
             ->setIsVerified(true)
             ->setBlocked(false)
             ->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
